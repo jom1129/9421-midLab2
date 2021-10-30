@@ -4,8 +4,9 @@ public class TreeNode<T> {
     private TreeNode<T> left;
     private T data;
     private TreeNode<T> right;
-    private int nodeWeight = 0;
-
+    private int nodeWeight = 0; // node weight is not always
+                                // equal to the frequency
+                                // of the token
     public TreeNode(T data) {
         this.data = data;
         left = null;
@@ -56,5 +57,13 @@ public class TreeNode<T> {
             if (right == null) right = new TreeNode<>(element);
             else right.insert(element);
         }
+    }
+
+    public void setNodeWeight(int nodeWeight) {
+        this.nodeWeight = nodeWeight;
+    }
+
+    public int getNodeWeight() {
+        return nodeWeight;
     }
 }
