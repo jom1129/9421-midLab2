@@ -9,7 +9,8 @@ public class Utility {
     }
 
     // TODO: 10/30/2021 @CJ
-    // if input is Text
+    // Use downcasting when creating a List instance
+    // List<Token<T>> list = new ArrayList<>();
     public <T> List<Token<T>> determineFrequency(StringBuilder userText) {
         return null;
     }
@@ -26,11 +27,10 @@ public class Utility {
 
     // TODO: 10/30/2021 @Kurt 
     public <T> void setHuffmanCode(Tree<T> forest) {
-        
+
     }
-    
 
-    public void showHuffmanTable() {
-
+    public <T> void showHuffmanTable(List<Token<T>> tokenList) {
+        for (var tok : tokenList) System.out.print(tok.toString());
     }
 }
