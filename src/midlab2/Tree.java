@@ -73,6 +73,15 @@ public class Tree<T> implements Comparable<Tree<T>> {
         inOrderHelper(node.getRight());
     }
 
+    public void clearHasVisited() { clearHasVisited(root); }
+
+    private void clearHasVisited(TreeNode<T> node) {
+        if (node == null) return;
+        node.setHasVisited(false);
+        clearHasVisited(node.getLeft());
+        clearHasVisited(node.getRight());
+    }
+
     public int compareTo(Tree<T> other) {
         return this.getWeight() - other.getWeight();
     }

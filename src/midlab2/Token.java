@@ -1,9 +1,9 @@
 package midlab2;
 
 public class Token<T> implements Comparable<Token<T>> {
-    T data;
-    String huffmanCode;
-    int frequency;
+    private T data;
+    private String huffmanCode;
+    private int frequency;
 
     Token() {
         this(null);
@@ -43,4 +43,13 @@ public class Token<T> implements Comparable<Token<T>> {
     public int compareTo(Token<T> o) {
         return this.getFrequency() - o.getFrequency();
     }
+
+    public void setHuffmanCode(String huffmanCode) {
+        this.huffmanCode = huffmanCode;
+    }
+
+    public String getHuffmanCode() {
+        return huffmanCode;
+    }
+
 }

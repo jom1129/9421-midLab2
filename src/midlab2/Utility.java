@@ -40,8 +40,20 @@ public class Utility {
 
     // TODO: 10/30/2021 @Kurt
     // To be used with forestBuilder
-    public <T> void setHuffmanCode(Tree<T> forest) {
+    public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
+        for(Token<T> node : forestList) {
+            setHuffmanCode(forest.getRoot(), node.getData());
+            node.setHuffmanCode(stackToString(treeStack));
+            // Empty the stack
+            treeStack.clear();
+            // Clear hasVisited property
+            forest.clearHasVisited();
+        }
 
+    }
+
+    private <T> void setHuffmanCode(TreeNode<T> node, T element) {
+        setHuffmanCode(node, element, -1);
     }
 
     private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
@@ -54,9 +66,7 @@ public class Utility {
             return;
         }
 
-        if (node.getData().equals(element)) {
-            return;
-        }
+        if (node.getData().equals(element)) return;
 
         if (!node.isLeaf() && node.getLeft().hasVisited() &&
             node.getRight().hasVisited() && !node.getData().equals(element)) {
@@ -65,6 +75,33 @@ public class Utility {
 
         setHuffmanCode(node.getLeft(), element, 0);
         setHuffmanCode(node.getRight(), element, 1);
+    }
+
+    private String stackToString(LinkedStack<Integer> stack) {
+        StringBuilder toInt = new StringBuilder();
+        while (!stack.isEmpty())
+            toInt.append(stack.pop());
+        return toInt.toString();
+    }
+
+    private void reverseStack() {
+        if (!treeStack.isEmpty()) {
+            Integer temp = treeStack.peek();
+            treeStack.pop();
+            reverseStack();
+
+            reverseStack(temp);
+        }
+
+    }
+
+    private void reverseStack(Integer x) {
+        if (treeStack.isEmpty()) treeStack.push(x);
+        else {
+            Integer temp = treeStack.peek();
+            treeStack.pop();
+            reverseStack(temp);
+        }
     }
 
 
