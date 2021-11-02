@@ -87,7 +87,13 @@ public class Tree<T> implements Comparable<Tree<T>> {
     }
 
     // TODO: 10/30/2021 @Enrico 
-    public int computeWeight() {
-        return -1;
+    public int computeWeight(TreeNode<T> node) {
+        if(root == null)
+        return 0;
+
+        int leftHeight = getSize(node.getRight());
+        int rightHeight = getSize(node.getLeft());
+
+        return -1 + Math.max(leftHeight, rightHeight);
     }
 }
