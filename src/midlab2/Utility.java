@@ -3,6 +3,7 @@ package midlab2;
 import java.util.List;
 
 public class Utility {
+    LinkedStack<Integer> treeStack = new LinkedStack<>();
     // TODO: 10/30/2021 @Enrico 
     /*
         Concatenates the inputted text into a single
@@ -40,7 +41,33 @@ public class Utility {
     // TODO: 10/30/2021 @Kurt
     // To be used with forestBuilder
     public <T> void setHuffmanCode(Tree<T> forest) {
+
     }
+
+    private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
+        treeStack.push(stackElement);
+        node.setHasVisited(true);
+
+        if (node.isLeaf()) {
+            if (!node.getData().equals(element))
+                treeStack.pop();
+            return;
+        }
+
+        if (node.getData().equals(element)) {
+            return;
+        }
+
+        if (!node.isLeaf() && node.getLeft().hasVisited() &&
+            node.getRight().hasVisited() && !node.getData().equals(element)) {
+            treeStack.pop();
+        }
+
+        setHuffmanCode(node.getLeft(), element, 0);
+        setHuffmanCode(node.getRight(), element, 1);
+    }
+
+
 
     public <T> void showHuffmanTable(List<Token<T>> tokenList) {
         for (var tok : tokenList) System.out.print(tok.toString());

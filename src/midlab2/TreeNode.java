@@ -7,6 +7,7 @@ public class TreeNode<T> {
     private int nodeWeight = 0; // node weight is not always
                                 // equal to the frequency
                                 // of the token
+    private boolean hasVisited = false;
     public TreeNode(T data) {
         this.data = data;
         left = null;
@@ -63,7 +64,16 @@ public class TreeNode<T> {
         this.nodeWeight = nodeWeight;
     }
 
-    public int getNodeWeight() {
-        return nodeWeight;
+
+    public boolean isLeaf() {
+        return getLeft() == null && getRight() == null;
+    }
+
+    public void setHasVisited(boolean hasVisited) {
+        this.hasVisited = hasVisited;
+    }
+
+    public boolean hasVisited() {
+        return hasVisited;
     }
 }
