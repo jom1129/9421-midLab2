@@ -10,13 +10,13 @@ public class Utility {
         Concatenates the inputted text into a single
         StringBuilder variable
      */
-    public StringBuilder acceptInput() {
+    public String acceptInput() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter text");
 
         StringBuilder string  = new StringBuilder(scan.nextLine());
         string.append(scan.nextLine());
-        return string;
+        return string.toString();
     }
 
     /* TODO: 10/30/2021 @CJ
@@ -27,7 +27,7 @@ public class Utility {
        List<Token<T>> list = new ArrayList<>();
      */
 
-    public <T> List<Token<T>> determineFrequency(StringBuilder userText) {
+    public <T> List<Token<T>> determineFrequency(String userText) {
         return null;
     }
 
@@ -59,14 +59,13 @@ public class Utility {
        Sets up the Forest of Trees
        Similar to that of page 22
      */
-     public <T> Tree<String> forestBuilder() {
+     public <T> Tree<String> forestBuilder(List<Token<T>> tokens) {
         TreeNode<String> tree;
         TreeNode<String> tree2 = null;
         TreeNode<String> temp;
         TreeNode<String> leftChild;
         TreeNode<String> rightChild;
-        StringBuilder text = acceptInput();
-        List<Token<T>> tokens = determineFrequency(text);
+
         int condition = 0;
         int c;
         Token<T> least = new Token<>();
