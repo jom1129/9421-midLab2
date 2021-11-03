@@ -36,7 +36,7 @@ public class Utility {
             throws ArgumentMismatchException {
         String temp = "";
         List<String> charList = Arrays.asList(temp.split(","));
-        List<String> frequencyList = Arrays.asList(temp.split(","));
+        List<String> binaryEquivalentList = Arrays.asList(temp.split(","));
 
         /*
         List<Integer> frequencyList = Arrays.stream(temp.split(","))
