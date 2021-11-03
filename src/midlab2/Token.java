@@ -3,7 +3,7 @@ package midlab2;
 public class Token<T> implements Comparable<Token<T>> {
     private T data;
     private String huffmanCode;
-    private int frequency;
+    private int frequency = 0;
 
     Token() {
         this(null);
@@ -58,6 +58,10 @@ public class Token<T> implements Comparable<Token<T>> {
             count++;
         }
         return count;
+    }
+
+    public void incrementFrequency() {
+        frequency++;
     }
 
 }

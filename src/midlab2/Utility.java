@@ -27,26 +27,21 @@ public class Utility {
        List<Token<T>> list = new ArrayList<>();
      */
 
-    public <T> List<Token<T>> determineFrequency(StringBuilder userText) {
-        userText = acceptInput();
-        List<Token<T>> list = new ArrayList<>();
-        int[] frq = new int[userText.length()];
-        String e = userText.toString();
-        char c[] = e.toCharArray();      
-        String d = "";  
-
-        for (int i = 0;i<userText.length();i++){
-            frq[i]=1;
-            for(int j = i+1;j<userText.length();j++){
-                if(c[i]==c[j]){
-                    frq[i]++;
-                    c[j]=0;
-                    d=Character.toString(c[i]);
-                    list.equals(d);
-                }
+    public List<Token<String>> determineFrequency(String userText) {
+        List<Character> characters = new ArrayList<>(); // characters that are
+                                                        // already detected
+        List<Token<String>> tokens = new ArrayList<>();
+        for(int i = 0; i < userText.length(); i++) {
+            if(!characters.contains(userText.charAt(i))) {
+                characters.add(userText.charAt(i));
+                tokens.add(new Token<>(Character.toString(userText.charAt(i))));
+            } else {
+                int matchingIndex = tokens.indexOf(new Token<>(Character.toString(userText.charAt(i))));
+                tokens.get(matchingIndex).incrementFrequency();
             }
         }
-        return list;
+
+        return tokens;
 }
 
     // TODO: 10/30/2021 @Jerome, Kurt
