@@ -50,27 +50,84 @@ public class Utility {
 }
 
     // TODO: 10/30/2021 @Jerome, Kurt
-    public <T> List<Token<T>> huffmanToText(List<Token<T>> tokenList)
+   public <T> List<Token<T>> huffmanToText(List<Token<T>> tokenList)
             throws ArgumentMismatchException {
+
         String temp = "";
+        int condition = 0;
+        Token<T> leastB = new Token<>();
+        Token<T> tempB = new Token<>(null, 0, "");
+        StringBuilder input = acceptInput();
+        StringBuilder code = new StringBuilder();
         List<String> charList = Arrays.asList(temp.split(","));
         List<String> binaryEquivalentList = Arrays.asList(temp.split(","));
+        List<Token<T>> output = new ArrayList<>();
+        List<Token<T>> equalB = new ArrayList<>();
 
-        /*
+
         List<Integer> frequencyList = Arrays.stream(temp.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
-         */
-
         // Exception block
-        if (charList.size() != binaryEquivalentList.size()) {
-            if (charList.size() < binaryEquivalentList.size())
-            throw new ArgumentMismatchException("Too many inputted frequencies.");
-        else throw new ArgumentMismatchException("Too many inputted tokens.");
+        if (charList.size() != frequencyList.size()) {
+            if (charList.size() < frequencyList.size())
+                throw new ArgumentMismatchException("Too many inputted frequencies.");
+            else throw new ArgumentMismatchException("Too many inputted tokens.");
         }
 
-        return null;
+
+        while (input.length() != 0) {
+            condition = 0;
+            
+            // if bits of token is greater than tempB
+            // saves the least number of tokens to leastB
+            for (Token<T> token : tokenList) {
+                if (token.getNumberofBits() > tempB.getNumberofBits()) {
+                    if (leastB.getData() == null) {
+                        leastB = token;
+                    }
+                    if ((leastB.getNumberofBits() > token.getNumberofBits())) {
+                        leastB = token;
+                    }
+                }
+            }
+        
+            // saves all tokens that have equal bits to List<Token<T>> equalB
+            for (Token<T> token : tokenList){
+                if (leastB.getNumberofBits() == token.getNumberofBits()){
+                    equalB.add(token);
+                }
+            }
+
+            // Gets the code of the input based on the least number of bits and saves it to StringBuilder code
+            for (int i = 0; i < leastB.getNumberofBits(); i++) {
+                code.append(input.charAt(i));
+            }
+
+            // Checks if the huffman code of the tokens of equalB if it is equal to the StringBuilder code
+            // if the huffman code of the token is equal to the StringBuilder code
+            //      add the token to List<Token<T>> output
+            //      delete the code in the input
+            for (Token<T> token : equalB) {
+                if (token.getHuffmanCode().equals(code.toString())) {
+                    output.add(token);
+                    input.delete(0, leastB.getNumberofBits());
+                    leastB = new Token<>();
+                    tempB = new Token<>();
+                    condition = 1;
+                }
+            }
+            // if there is no equal huffman code 
+            // save leastB to tempB (to get the next least bit)
+            if (condition == 0){
+                tempB = leastB;
+                leastB = new Token<>();
+            }
+            //resets equalB
+            equalB = new ArrayList<>();
+        }
+        return output;
     }
 
     /* TODO: 10/30/2021 @Jerome
