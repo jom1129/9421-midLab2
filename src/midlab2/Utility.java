@@ -207,10 +207,10 @@ public class Utility {
                 }
             }
 
-            // if next element is greater than the value of the root
+            // if next element is greater or equal to than the value of the root
             // sets the element as the right child of the tree
             // if (tree.getNodeWeight() < least.getFrequency())
-            if (tree.compareTo(least.getFrequency()) < 0) {
+            if (tree.compareTo(least.getFrequency()) <= 0) {
                 //temp = new TreeNode<>((tree.getData() + least.getFrequency()));
                 temp = new TreeNode<>(null);
                 temp.setNodeWeight((tree.getNodeWeight() + least.getFrequency()));
