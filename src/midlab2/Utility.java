@@ -2,6 +2,7 @@ package midlab2;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Utility {
     LinkedStack<Integer> treeStack = new LinkedStack<>();
@@ -27,28 +28,29 @@ public class Utility {
        List<Token<T>> list = new ArrayList<>();
      */
 
-    public <T> List<Token<T>> determineFrequency(StringBuilder userText) {
-        userText = acceptInput();
-        List<Token<T>> list = new ArrayList<>();
-        int[] frq = new int[userText.length()];
-        String e = userText.toString();
-        char c[] = e.toCharArray();      
-        String d = "";  
+    public List<Token<String>> determineFrequency(String userText) {
+        List<Character> characters = new ArrayList<>(); // characters that are
+                                                        // already detected
+        List<Token<String>> tokens = new ArrayList<>();
+        for(int i = 0; i < userText.length(); i++) {
 
-        for (int i = 0;i<userText.length();i++){
-            frq[i]=1;
-            for(int j = i+1;j<userText.length();j++){
-                if(c[i]==c[j]){
-                    frq[i]++;
-                    c[j]=0;
-                    d=Character.toString(c[i]);
-                    list.equals(d);
-                }
+            if(!characters.contains(userText.charAt(i)) || tokens.isEmpty()) {
+                characters.add(userText.charAt(i));
+                tokens.add(new Token<>(Character.toString(userText.charAt(i))));
+            } else {
+                int finalI = i;
+                int matchingIndex = IntStream.range(0, tokens.size())
+                                .filter(e -> tokens.get(e).getData()
+                                        .equals(Character.toString(userText.charAt(finalI))))
+                                        .findFirst()
+                                                .orElse(-1);
+                tokens.get(matchingIndex).incrementFrequency();
             }
         }
-        return list;
+        return tokens;
 }
 
+/*
     // TODO: 10/30/2021 @Jerome, Kurt
    public <T> List<Token<T>> huffmanToText(List<Token<T>> tokenList)
             throws ArgumentMismatchException {
@@ -129,6 +131,8 @@ public class Utility {
         }
         return output;
     }
+
+ */
 
     /* TODO: 10/30/2021 @Jerome
        Sets up the Forest of Trees

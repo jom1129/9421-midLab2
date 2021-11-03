@@ -10,7 +10,7 @@ public class Token<T> implements Comparable<Token<T>> {
     }
 
     Token(T data) {
-        this(data, 0);
+        this(data, 1);
     }
 
     Token(T data, int frequency) {
@@ -58,6 +58,10 @@ public class Token<T> implements Comparable<Token<T>> {
             count++;
         }
         return count;
+    }
+
+    public void incrementFrequency() {
+        frequency++;
     }
 
 }

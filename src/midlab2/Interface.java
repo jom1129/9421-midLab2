@@ -70,7 +70,7 @@ public class Interface {
     private JComponent[] inputPanelComponents = { new JLabel("Input: "), userInputScrollPane };
     private JComponent[] inputTypePanelComponents = { new JLabel("Operation: "), operationType };
     private JComponent[] charInputPanelComponents = { new JLabel("Characters: "), charInputScrollPane };
-    private JComponent[] binInputPanelComponents = { new JLabel("Binary Form: "), binInputScrollPane };
+    private JComponent[] binInputPanelComponents = { new JLabel("Number of Bits: "), binInputScrollPane };
     private JComponent[] buttonPanelComponents = { submit, clear };
     private JComponent[] authorsPanelComponents = { new JLabel("Authors: "), authorsScrollPane };
 
@@ -139,6 +139,7 @@ public class Interface {
                     tokenList = utility.determineFrequency(userInputText.getText());
                     forest = utility.forestBuilder(tokenList);
                     utility.setHuffmanCode(forest, tokenList);
+                    utility.showHuffmanTable(tokenList);
                 } else {
                 }
             } catch (ArgumentMismatchException arg) {
