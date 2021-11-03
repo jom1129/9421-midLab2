@@ -1,7 +1,7 @@
 package midlab2;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Utility {
     LinkedStack<Integer> treeStack = new LinkedStack<>();
@@ -32,7 +32,26 @@ public class Utility {
     }
 
     // TODO: 10/30/2021 @Jerome, Kurt
-    public <T> List<Token<T>> huffmanToText() {
+    public <T> List<Token<T>> huffmanToText(List<Token<T>> tokenList)
+            throws ArgumentMismatchException {
+        String temp = "";
+        List<String> charList = Arrays.asList(temp.split(","));
+        List<String> frequencyList = Arrays.asList(temp.split(","));
+
+        /*
+        List<Integer> frequencyList = Arrays.stream(temp.split(","))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+         */
+
+        // Exception block
+        if (charList.size() != frequencyList.size()) {
+            if (charList.size() < frequencyList.size())
+            throw new ArgumentMismatchException("Too many inputted frequencies.");
+        else throw new ArgumentMismatchException("Too many inputted tokens.");
+        }
+
         return null;
     }
 
