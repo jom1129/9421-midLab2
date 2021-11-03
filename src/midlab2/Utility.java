@@ -46,8 +46,8 @@ public class Utility {
          */
 
         // Exception block
-        if (charList.size() != frequencyList.size()) {
-            if (charList.size() < frequencyList.size())
+        if (charList.size() != binaryEquivalentList.size()) {
+            if (charList.size() < binaryEquivalentList.size())
             throw new ArgumentMismatchException("Too many inputted frequencies.");
         else throw new ArgumentMismatchException("Too many inputted tokens.");
         }

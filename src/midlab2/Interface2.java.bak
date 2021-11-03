@@ -18,7 +18,7 @@ import java.io.PrintStream;
 /**
  * The GUI class
  */
-public class Interface {
+public class Interface2 {
 
     private static final int TEXTAREA_COLUMNS = 20;
     StringBuilder stack;   // Local stack variable
@@ -43,7 +43,7 @@ public class Interface {
      * Initializes, attaches ActionListeners to JComponents
      * and attaches JComponents to JPanels
      */
-    public Interface() {
+    public Interface2() {
         redirectSystemStreams();    // redirect printStream to JTextArea
 
         labelPanel.add(new JLabel("Text-Huffman Utility"));
