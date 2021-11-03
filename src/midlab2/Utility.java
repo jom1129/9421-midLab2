@@ -29,7 +29,25 @@ public class Utility {
      */
 
     public <T> List<Token<T>> determineFrequency(StringBuilder userText) {
-        return null;
+        userText = acceptInput();
+        List<Token<T>> list = new ArrayList<>();
+        int[] frq = new int[userText.length()];
+        String e = userText.toString();
+        char c[] = e.toCharArray();      
+        String d = "";  
+
+        for (int i = 0;i<userText.length();i++){
+            frq[i]=1;
+            for(int j = i+1;j<userText.length();j++){
+                if(c[i]==c[j]){
+                    frq[i]++;
+                    c[j]=0;
+                    d=Character.toString(c[i]);
+                    list.equals(d);
+                }
+            }
+        }
+        return list;
     }
 
     // TODO: 10/30/2021 @Jerome, Kurt
