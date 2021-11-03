@@ -50,19 +50,17 @@ public class Utility {
         return tokens;
 }
 
-/*
     // TODO: 10/30/2021 @Jerome, Kurt
-   public <T> List<Token<T>> huffmanToText(List<Token<T>> tokenList)
+   public <T> List<Token<T>> huffmanToText(String string, List<Token<T>> tokenList)
             throws ArgumentMismatchException {
 
-        String temp = "";
+        String temp = string;
         int condition = 0;
         Token<T> leastB = new Token<>();
         Token<T> tempB = new Token<>(null, 0, "");
-        StringBuilder input = acceptInput();
+        StringBuilder input = new StringBuilder(string);
         StringBuilder code = new StringBuilder();
         List<String> charList = Arrays.asList(temp.split(","));
-        List<String> binaryEquivalentList = Arrays.asList(temp.split(","));
         List<Token<T>> output = new ArrayList<>();
         List<Token<T>> equalB = new ArrayList<>();
 
@@ -132,7 +130,6 @@ public class Utility {
         return output;
     }
 
- */
 
     /* TODO: 10/30/2021 @Jerome
        Sets up the Forest of Trees
@@ -315,7 +312,8 @@ public class Utility {
     public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
         for(Token<T> node : forestList) {
             setHuffmanCode(forest.getRoot(), node.getData());
-            node.setHuffmanCode(stackToString(treeStack));
+            var temp = stackToString(treeStack);
+            node.setHuffmanCode(temp);
             // Empty the stack
             treeStack.clear();
             // Clear hasVisited property
@@ -329,7 +327,7 @@ public class Utility {
     }
 
     private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
-        treeStack.push(stackElement);
+        if (stackElement != -1) treeStack.push(stackElement);
         node.setHasVisited(true);
 
         if (node.isLeaf()) {
@@ -338,7 +336,9 @@ public class Utility {
             return;
         }
 
-        if (node.getData().equals(element)) return;
+        //if(!treeStack.isEmpty() && node.getData() != element) treeStack.pop();
+
+        if (node.getData() != null && node.getData().equals(element)) return;
 
         if (!node.isLeaf() && node.getLeft().hasVisited() &&
             node.getRight().hasVisited() && !node.getData().equals(element)) {
@@ -351,7 +351,7 @@ public class Utility {
 
     private String stackToString(LinkedStack<Integer> stack) {
         StringBuilder toInt = new StringBuilder();
-        while (!stack.isEmpty())
+        while (!stack.isEmpty() && stack.getTop().getLink() != null && stack.getTop().getInfo() != -1)
             if (stack.peek() != -1) toInt.append(stack.pop());
         return toInt.toString();
     }
@@ -379,6 +379,6 @@ public class Utility {
 
 
     public <T> void showHuffmanTable(List<Token<T>> tokenList) {
-        for (var tok : tokenList) System.out.print(tok.toString());
+        for (var tok : tokenList) System.out.println(tok.getData() + " " + tok.getHuffmanCode());
     }
 }

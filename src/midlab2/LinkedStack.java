@@ -88,7 +88,7 @@ public class LinkedStack <T>  {
      */
 
     public void clear() {
-        for (var top = this.top; !isEmpty(); top = top.getLink(), --numElements)
+        for (; top.getInfo() != null && top.getLink() != null; top = top.getLink(), --numElements)
             top.setLink(null);
     }
 

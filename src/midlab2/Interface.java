@@ -1,5 +1,6 @@
 package midlab2;
 
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -78,6 +79,9 @@ public class Interface {
     private JComponent[] textToHuffmanPanelComponents = { authorsPanel };
     private JComponent[] huffmanToTextPanelComponents = { charPanel, binaryPanel };
 
+    // JComponent Arrays for clearing TextFields
+    private JTextArea[] clearableTextFields = { userInputText, charInputText, binInputText, outputField };
+
     // Accessor Methods
     public JPanel getMainCardPanel() {
         return mainCardPanel;
@@ -121,6 +125,7 @@ public class Interface {
         for (var component : inputTypePanelComponents) inputTypePanel.add(component);
         operationType.addItemListener((ItemEvent e) -> {
             CardLayout cardLayout = (CardLayout) mainCardPanel.getLayout();
+            for(var text : clearableTextFields)text.setText("");
             cardLayout.show(mainCardPanel, (String) e.getItem());
         });
         operationType.setSelectedIndex(0);
@@ -141,6 +146,7 @@ public class Interface {
                     utility.setHuffmanCode(forest, tokenList);
                     utility.showHuffmanTable(tokenList);
                 } else {
+                    utility.huffmanToText(userInputText.getText(), tokenList);
                 }
             } catch (ArgumentMismatchException arg) {
                 JOptionPane.showMessageDialog(null,
@@ -150,6 +156,10 @@ public class Interface {
                         inputException.getMessage());
             }
         });
+
+        clear.addActionListener((ActionEvent e) -> {
+            for (var text : clearableTextFields) text.setText("");
+        } );
 
         // Authors Panel
         AUTHORS = """
