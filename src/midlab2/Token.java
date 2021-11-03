@@ -51,5 +51,13 @@ public class Token<T> implements Comparable<Token<T>> {
     public String getHuffmanCode() {
         return huffmanCode;
     }
+    
+     public int getNumberofBits(){
+        int count = 0;
+        for(int i = 0; i < this.getHuffmanCode().length(); i++) {
+            count++;
+        }
+        return count;
+    }
 
 }
