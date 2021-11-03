@@ -1,6 +1,6 @@
 package midlab2;
 
-public class TreeNode<T> {
+public class TreeNode<T> implements Comparable<TreeNode<T>>{
     private TreeNode<T> left;
     private T data;
     private TreeNode<T> right;
@@ -60,6 +60,10 @@ public class TreeNode<T> {
         }
     }
 
+    public int getNodeWeight() {
+        return nodeWeight;
+    }
+
     public void setNodeWeight(int nodeWeight) {
         this.nodeWeight = nodeWeight;
     }
@@ -75,5 +79,10 @@ public class TreeNode<T> {
 
     public boolean hasVisited() {
         return hasVisited;
+    }
+
+    @Override
+    public int compareTo(TreeNode<T> o) {
+        return this.getLeft().getNodeWeight() - o.getNodeWeight();
     }
 }

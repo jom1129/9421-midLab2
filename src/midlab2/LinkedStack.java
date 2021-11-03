@@ -6,7 +6,7 @@ package midlab2;
  */
 public class LinkedStack <T>  {
     private StackNode<T> top;    // a reference to the StackNode at the
-    // top of the stack
+                                 // top of the stack
     private int numElements = 0;    // holds the number of elements
 
     /**

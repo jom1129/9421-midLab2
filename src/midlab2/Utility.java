@@ -1,6 +1,7 @@
 package midlab2;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Utility {
     LinkedStack<Integer> treeStack = new LinkedStack<>();
@@ -16,7 +17,6 @@ public class Utility {
         StringBuilder string  = new StringBuilder(scan.nextLine());
         string.append(scan.nextLine());
         return string;
-    }
     }
 
     /* TODO: 10/30/2021 @CJ
