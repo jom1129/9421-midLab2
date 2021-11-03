@@ -1,13 +1,23 @@
 package midlab2;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.util.List;
 
 public class Interface {
     private final int DEFAULT_COLUMNS = 50;
     private final int DEFAULT_ROWS = 5;
     private final String AUTHORS;
+    List<Token<String>> tokenList;
+    Tree<String> forest;
 
     // Panel that will contain the cards
     private JPanel mainCardPanel = new JPanel(new CardLayout());
@@ -94,6 +104,9 @@ public class Interface {
     }
 
     Interface() {
+        Utility utility = new Utility();
+        redirectSystemStreams();
+
         // Title Panel
         titlePanel.add(new JLabel("Text-Huffman Utility"));
 
@@ -120,6 +133,22 @@ public class Interface {
 
         // Button Panel Components
         for (var component : buttonPanelComponents) buttonPanel.add(component);
+        submit.addActionListener((ActionEvent e) -> {
+            try {
+                if (operationType.getSelectedIndex() == 0) {
+                    tokenList = utility.determineFrequency(userInputText.getText());
+                    forest = utility.forestBuilder(tokenList);
+                    utility.setHuffmanCode(forest, tokenList);
+                } else {
+                }
+            } catch (ArgumentMismatchException arg) {
+                JOptionPane.showMessageDialog(null,
+                        arg.getMessage());
+            } catch (InvalidInputException inputException) {
+                JOptionPane.showMessageDialog(null,
+                        inputException.getMessage());
+            }
+        });
 
         // Authors Panel
         AUTHORS = """
@@ -171,10 +200,51 @@ public class Interface {
 
         // Display the Window
         frame.pack();
+        frame.setResizable(false);
         frame.setTitle("Text-Huffman Utility");
         frame.setVisible(true);
     }
 
+
+    /**
+     * Helper method for redirectSystemStreams()
+     * @param text
+     */
+    private void updateTextPane(final String text) {
+        SwingUtilities.invokeLater(() -> {
+            Document doc = outputField.getDocument();
+            try {
+                doc.insertString(doc.getLength(), text, null);
+            } catch (BadLocationException e) {
+
+            }
+            outputField.setCaretPosition(doc.getLength() - 1);
+        });
+    }
+
+    /**
+     * Redirects CLI output to the JTextArea tableText
+     */
+    private void redirectSystemStreams() {
+        OutputStream out = new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+                updateTextPane(String.valueOf((char) b));
+            }
+
+            @Override
+            public void write(byte[] b, int off, int len) throws IOException {
+                updateTextPane(new String(b, off, len));
+            }
+
+            @Override
+            public void write(byte[] b) throws IOException {
+                write(b, 0, b.length);
+            }
+        };
+        System.setOut(new PrintStream(out, true));
+        // System.setErr(new PrintStream(out, true));
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {

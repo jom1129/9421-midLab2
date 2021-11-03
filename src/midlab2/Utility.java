@@ -10,14 +10,13 @@ public class Utility {
         Concatenates the inputted text into a single
         StringBuilder variable
      */
-   public StringBuilder acceptInput() {
+    public String acceptInput() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter text");
 
-        StringBuilder str  = new StringBuilder(scan.nextLine());
-        str.append(scan.nextLine());
-        int length = str.length();
-        return str;
+        StringBuilder string  = new StringBuilder(scan.nextLine());
+        string.append(scan.nextLine());
+        return string.toString();
     }
 
     /* TODO: 10/30/2021 @CJ
@@ -48,7 +47,7 @@ public class Utility {
             }
         }
         return list;
-    }
+}
 
     // TODO: 10/30/2021 @Jerome, Kurt
     public <T> List<Token<T>> huffmanToText(List<Token<T>> tokenList)
@@ -78,14 +77,13 @@ public class Utility {
        Sets up the Forest of Trees
        Similar to that of page 22
      */
-     public <T> Tree<Integer> forestBuilder() {
-        TreeNode<Integer> tree;
-        TreeNode<Integer> tree2 = null;
-        TreeNode<Integer> temp;
-        TreeNode<Integer> leftChild;
-        TreeNode<Integer> rightChild;
-        StringBuilder text = acceptInput();
-        List<Token<T>> tokens = determineFrequency(text);
+     public <T> Tree<String> forestBuilder(List<Token<T>> tokens) {
+        TreeNode<String> tree;
+        TreeNode<String> tree2 = null;
+        TreeNode<String> temp;
+        TreeNode<String> leftChild;
+        TreeNode<String> rightChild;
+
         int condition = 0;
         int c;
         Token<T> least = new Token<>();
@@ -97,7 +95,7 @@ public class Utility {
                 least = token;
             }
             else {
-                if (least.getFrequency() > token.getFrequency()) {
+                if (least.compareTo(token) > 0 ) {
                     least = token;
                 }
             }
@@ -109,7 +107,7 @@ public class Utility {
                 least2 = token;
             }
             else {
-                if (least2.getFrequency() >= token.getFrequency()) {
+                if (least2.compareTo(token) >= 0) {
                     if (token.getData() != least.getData()){
                         least2 = token;
                     }
@@ -118,9 +116,13 @@ public class Utility {
         }
 
         // initializing 1st tree
-        tree = new TreeNode<>((least.getFrequency() + least2.getFrequency()));
-        leftChild = new TreeNode<>(least.getFrequency());
-        rightChild = new TreeNode<>(least2.getFrequency());
+        // tree = new TreeNode<>((least.getFrequency() + least2.getFrequency()));
+        tree = new TreeNode<>(null);
+        tree.setNodeWeight((least.getFrequency() + least2.getFrequency()));
+        leftChild = new TreeNode<>(least.getData().toString());
+        leftChild.setNodeWeight(least.getFrequency());
+        rightChild = new TreeNode<>(least2.getData().toString());
+        rightChild.setNodeWeight(least2.getFrequency());
         tree.setLeft(leftChild);
         tree.setRight(rightChild);
 
@@ -131,11 +133,13 @@ public class Utility {
             // Saves the next least element to variable least
             least = new Token<>();
             for (Token<T> token : tokens) {
-                if (token.getFrequency() > least2.getFrequency()) {
+                //if (token.getFrequency() > least2.getFrequency())
+                if (token.compareTo(least2) > 0) {
                     if (least.getData() == null) {
                         least = token;
                     } else {
-                        if (least.getFrequency() > token.getFrequency()) {
+                        //(least.getFrequency() > token.getFrequency())
+                        if (least.compareTo(token) > 0) {
                             least = token;
                         }
                     }
@@ -144,15 +148,19 @@ public class Utility {
 
             // if next element is greater than the value of the root
             // sets the element as the right child of the tree
-            if (tree.getData() < least.getFrequency()) {
-                temp = new TreeNode<>((tree.getData() + least.getFrequency()));
-                rightChild = new TreeNode<>(least.getFrequency());
+            // if (tree.getNodeWeight() < least.getFrequency())
+            if (tree.compareTo(least.getFrequency()) < 0) {
+                //temp = new TreeNode<>((tree.getData() + least.getFrequency()));
+                temp = new TreeNode<>(null);
+                temp.setNodeWeight((tree.getNodeWeight() + least.getFrequency()));
+                rightChild = new TreeNode<>(least.getData().toString());
                 temp.setLeft(tree);
                 temp.setRight(rightChild);
                 tree = temp;
                 least2 = least;
                 for (Token<T> token : tokens){
-                    if (token.getFrequency() > least2.getFrequency()){
+                    //if (token.getFrequency() > least2.getFrequency())
+                    if (token.compareTo(least2) > 0){
                         c++;
                     }
                 }
@@ -164,15 +172,19 @@ public class Utility {
             // if tree2 is not null
             // sets the element as the right child of tree2
             else if (tree2 != null){
-                if (tree2.getData() < least.getFrequency()){
-                    temp = new TreeNode<>((tree2.getData() + least.getFrequency()));
-                    rightChild = new TreeNode<>(least.getFrequency());
+                // if (tree2.getNodeWeight() < least.getFrequency())
+                if (tree2.compareTo(least.getFrequency()) < 0){
+                    //temp = new TreeNode<>((tree2.getData() + least.getFrequency()));
+                    temp = new TreeNode<>(null);
+                    temp.setNodeWeight((tree2.getNodeWeight() + least.getFrequency()));
+                    rightChild = new TreeNode<>(least.getData().toString());
                     temp.setLeft(tree2);
                     temp.setRight(rightChild);
                     tree2 = temp;
                     least2 = least;
                     for (Token<T> token : tokens){
-                        if (token.getFrequency() > least2.getFrequency()){
+                        // if (token.getFrequency() > least2.getFrequency())
+                        if (token.compareTo(least2) > 0){
                             c++;
                         }
                     }
@@ -182,7 +194,9 @@ public class Utility {
                     // if all elements are used
                     // sets the parent of tree and tree2 to temp and save temp to tree
                     if (condition == 1){
-                        temp = new TreeNode<>((tree.getData() + tree2.getData()));
+                        //temp = new TreeNode<>((tree.getData() + tree2.getData()));
+                        temp = new TreeNode<>(null);
+                        temp.setNodeWeight((tree.getNodeWeight()) + tree2.getNodeWeight());
                         temp.setLeft(tree);
                         temp.setRight(tree2);
                         tree = temp;
@@ -196,23 +210,30 @@ public class Utility {
             else {
                 least2 = new Token<>();
                 for (Token<T> token : tokens) {
-                    if (token.getFrequency() > least.getFrequency()) {
+                    // if (token.getFrequency() > least.getFrequency())
+                    if (token.compareTo(least) > 0) {
                         if (least2.getData() == null) {
                             least2 = token;
                         } else {
-                            if (least2.getFrequency() > token.getFrequency()) {
+                            // if (least2.getFrequency() > token.getFrequency())
+                            if (least2.compareTo(token) > 0) {
                                 least2 = token;
                             }
                         }
                     }
                 }
-                tree2 = new TreeNode<>((least.getFrequency() + least2.getFrequency()));
-                leftChild = new TreeNode<>(least.getFrequency());
-                rightChild = new TreeNode<>(least2.getFrequency());
+                //tree2 = new TreeNode<>((least.getFrequency() + least2.getFrequency()));
+                tree2 = new TreeNode<>(null);
+                tree2.setNodeWeight((least.getFrequency() + least2.getFrequency()));
+                leftChild = new TreeNode<>(least.getData().toString());
+                leftChild.setNodeWeight(least.getFrequency());
+                rightChild = new TreeNode<>(least2.getData().toString());
+                rightChild.setNodeWeight(least2.getFrequency());
                 tree2.setLeft(leftChild);
                 tree2.setRight(rightChild);
                 for (Token<T> token : tokens){
-                    if (token.getFrequency() > least2.getFrequency()){
+                    // if (token.getFrequency() > least2.getFrequency())
+                    if (token.compareTo(least2) > 0){
                         c++;
                     }
                 }
