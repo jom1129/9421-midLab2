@@ -18,15 +18,6 @@ public class Utility {
         Concatenates the inputted text into a single
         StringBuilder variable
      */
-    public String acceptInput() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter text");
-
-        StringBuilder string  = new StringBuilder(scan.nextLine());
-        string.append(scan.nextLine());
-        return string.toString();
-    }
-
 
     /* TODO: 10/30/2021 @CJ
        Determines the frequency of each character
@@ -219,6 +210,28 @@ public class Utility {
 
     }
 
+    public <T> void setHuffmanCodeAlter(Tree<T> forest, List<Token<T>> forestList) {
+        for(Token<T> node : forestList) {
+            setHuffmanCodeAlter(forest.getRoot(), node.getData());
+            var temp = stackToString(treeStack);
+            node.setHuffmanCode(temp);
+            // Empty the stack
+            treeStack.clear();
+            // Clear hasVisited property
+            forest.clearHasVisited();
+        }
+
+    }
+
+   private String setHuffmanCodeAlter(TreeNode<String> node, String s) {
+         if (node.isLeaf() &&
+         Character.isLetter(node.getData().charAt(0)))
+             return s;
+
+         setHuffmanCodeAlter(node.getLeft(), s + "0");
+         setHuffmanCodeAlter(node.getRight(), s + "1");
+         return s;
+   }
     private <T> void setHuffmanCode(TreeNode<T> node, T element) {
         setHuffmanCode(node, element, -1);
     }
