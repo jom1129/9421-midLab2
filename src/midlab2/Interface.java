@@ -14,8 +14,8 @@ import java.awt.event.ItemEvent;
 import java.util.List;
 
 public class Interface {
-    private final int DEFAULT_COLUMNS = 50;
-    private final int DEFAULT_ROWS = 5;
+    private final int DEFAULT_COLUMNS = 80;
+    private final int DEFAULT_ROWS = 10;
     private final String AUTHORS;
     List<Token<String>> tokenList;
     Tree<String> forest;
@@ -63,7 +63,7 @@ public class Interface {
     private JScrollPane outputScrollPane = new JScrollPane(outputField);
 
     // Authors JTextArea
-    private JTextArea authorsField = new JTextArea(DEFAULT_ROWS * 2, DEFAULT_COLUMNS);
+    private JTextArea authorsField = new JTextArea(15, DEFAULT_COLUMNS);
     private JScrollPane authorsScrollPane = new JScrollPane(authorsField);
 
     // JComponent Arrays for adding JComponents sequentially
@@ -154,6 +154,9 @@ public class Interface {
             } catch (InvalidInputException inputException) {
                 JOptionPane.showMessageDialog(null,
                         inputException.getMessage());
+            } catch (NumberFormatException | NullPointerException num) {
+                JOptionPane.showMessageDialog(null,
+                        "Invalid Input.");
             }
         });
 
@@ -171,6 +174,10 @@ public class Interface {
                             CASTRO, ENRICO
                             GARRIDO, LUPIN
                             NUDO, KURT
+                
+                PROGRAM INFORMATION
+                    ENCODE TEXT: Converts Regular Text to a Huffman Expression
+                    DECODE: Decodes a Huffman Expression given a Cipher            
                 """;
         authorsField.setText(AUTHORS);
         authorsField.setEditable(false);
@@ -187,6 +194,7 @@ public class Interface {
         // Output Panel
         outputPanel.add(new JLabel("Output: "));
         outputPanel.add(outputScrollPane);
+        outputField.setEditable(false);
 
         mainCardPanel.add(textToHuffmanPanel, options[0]);
         mainCardPanel.add(huffmanToTextPanel, options[1]);

@@ -334,9 +334,10 @@ public class Utility {
       setHuffmanCode(node, element, -1);
    }
 
-   private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
-       if (stackElement != -1) treeStack.push(stackElement);
-       node.setHasVisited(true);
+    private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
+        if (stackElement != -1) treeStack.push(stackElement);
+
+        node.setHasVisited(true);
 
         if (node.isLeaf()) {
             if (!node.getData().equals(element))
@@ -346,16 +347,18 @@ public class Utility {
 
         //if(!treeStack.isEmpty() && node.getData() != element) treeStack.pop();
 
-        if (node.getData() != null && node.getData().equals(element)) return;
+        if (node.getData() != null && node.getData().equals(element)) {
+            return;
+        }
 
-        if (!node.isLeaf() && node.getLeft().hasVisited() &&
-            node.getRight().hasVisited() && !node.getData().equals(element)) {
+
+        if (!node.isLeaf() && node.getLeft().hasVisited() && node.getRight().hasVisited() && !node.getLeft().getData().equals(element) && !node.getRight().getData().equals(element)) {
             treeStack.pop();
         }
 
         setHuffmanCode(node.getLeft(), element, 0);
         setHuffmanCode(node.getRight(), element, 1);
-   }
+    }
 
    private String stackToString(LinkedStack<Integer> stack) {
         StringBuilder toInt = new StringBuilder();
@@ -387,6 +390,13 @@ public class Utility {
 
 
    public <T> void showHuffmanTable(List<Token<T>> tokenList) {
-       for (var tok : tokenList) System.out.println(tok.getData() + " " + tok.getHuffmanCode());
+       for (var tok : tokenList) {
+
+       }
+       System.out.printf("%-20s %-20s %-20s %-20s\n", "Character",
+                 "Huffman Code", "Frequency", "Number of Bits");
+       for (var tok : tokenList)
+           System.out.printf("%-20s %-20s %-20s %-20s\n", tok.getData(), tok.getHuffmanCode(),
+                   tok.getFrequency(), tok.getNumberofBits());
     }
 }
