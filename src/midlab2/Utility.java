@@ -386,7 +386,18 @@ public class Utility {
             reverseStack(temp);
         }
     }
-
+    
+public <T> int ComputePercentageSavings(List<Token<T>>tokenList) {
+        double total = 0;
+        double total2 = 0;
+        double percentage = 0;
+        for (Token<T> token : tokenList) {
+            total = total + (token.getFrequency() + 7);
+            total2 = total2 + (token.getFrequency() * token.getNumberofBits());
+            percentage = (total - total2) / (total) * 1;
+        }
+        return percentage;
+    }
 
 
    public <T> void showHuffmanTable(List<Token<T>> tokenList) {
