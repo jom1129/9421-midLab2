@@ -146,6 +146,7 @@ public class Interface {
                     utility.setHuffmanCode(forest, tokenList);
                     utility.showHuffmanTable(tokenList);
                 } else {
+                    tokenList = utility.parseTokenList(charInputText.getText(), binInputText.getText());
                     utility.huffmanToText(userInputText.getText(), tokenList);
                 }
             } catch (ArgumentMismatchException arg) {

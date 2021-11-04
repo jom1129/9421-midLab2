@@ -50,6 +50,36 @@ public class Utility {
         return tokens;
 }
 
+
+   public List<Token<String>> parseTokenList (String charText, String bitText) {
+       List<String> characterTemp;
+       List<String> binTemp;
+       List<Token<String>> tokens = new ArrayList<>();
+
+        // Split by comma, strip whitespaces
+       characterTemp = Arrays.asList(charText.split("\\s*,\\s*"));
+       binTemp = Arrays.asList(charText.split("\\s*,\\s*"));
+
+        // Eliminate Duplicates
+        List<String> characters = characterTemp.stream()
+                .distinct()
+                .collect(Collectors.toList());
+        List<String> binList = binTemp.stream()
+                .distinct()
+                .collect(Collectors.toList());
+
+
+        if (characters.size() != binList.size()) {
+            throw new ArgumentMismatchException("Inputted parameters are not equal in length.");
+        }
+
+        for (int i = 0; i < characters.size(); i++) {
+            tokens.add(new Token<>(characters.get(i)));
+            tokens.get(i).setNumberOfBits(Integer.parseInt(binTemp.get(i)));
+        }
+        return tokens;
+   }
+
     // TODO: 10/30/2021 @Jerome, Kurt
    public <T> List<Token<T>> huffmanToText(String string, List<Token<T>> tokenList)
             throws ArgumentMismatchException {
@@ -335,10 +365,14 @@ public class Utility {
    }
 
     private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
+         // root is represented by -1, don't push it to the stack
         if (stackElement != -1) treeStack.push(stackElement);
 
         node.setHasVisited(true);
 
+        // if the node is a leaf
+        // and that leaf does not match the element
+        // remove it from the stack
         if (node.isLeaf()) {
             if (!node.getData().equals(element))
                 treeStack.pop();
@@ -347,11 +381,19 @@ public class Utility {
 
         //if(!treeStack.isEmpty() && node.getData() != element) treeStack.pop();
 
+        // if the node is not empty and it equals the element passed
+        // start returning from the call stack
         if (node.getData() != null && node.getData().equals(element)) {
             return;
         }
 
-
+        /*
+            CONSTRAINTS:
+                1. The Node is not a leaf
+                2. The Children of the node have been visited
+                3. The Children of the node's element does not match the passed element
+                If so, pop the stack
+         */
         if (!node.isLeaf() && node.getLeft().hasVisited() && node.getRight().hasVisited() && !node.getLeft().getData().equals(element) && !node.getRight().getData().equals(element)) {
             treeStack.pop();
         }
@@ -386,11 +428,13 @@ public class Utility {
             reverseStack(temp);
         }
     }
+
     
 public <T> int ComputePercentageSavings(List<Token<T>>tokenList) {
         double total = 0;
         double total2 = 0;
         double percentage = 0;
+
         for (Token<T> token : tokenList) {
             total = total + (token.getFrequency() + 7);
             total2 = total2 + (token.getFrequency() * token.getNumberofBits());

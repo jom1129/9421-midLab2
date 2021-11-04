@@ -89,4 +89,6 @@ public class TreeNode<T> implements Comparable<TreeNode<T>>{
     public int compareTo(int o) {
         return this.getNodeWeight() - o;
     }
+
+
 }

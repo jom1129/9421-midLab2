@@ -4,6 +4,7 @@ public class Token<T> implements Comparable<Token<T>> {
     private T data;
     private String huffmanCode;
     private int frequency = 0;
+    private int numberOfBits = 0;
 
     Token() {
         this(null);
@@ -53,11 +54,14 @@ public class Token<T> implements Comparable<Token<T>> {
     }
     
      public int getNumberofBits(){
-        int count = 0;
         for(int i = 0; i < this.getHuffmanCode().length(); i++) {
-            count++;
+            numberOfBits++;
         }
-        return count;
+        return numberOfBits;
+    }
+
+    public void setNumberOfBits(int numberOfBits) {
+        this.numberOfBits = numberOfBits;
     }
 
     public void incrementFrequency() {
