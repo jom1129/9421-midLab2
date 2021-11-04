@@ -212,6 +212,7 @@ public class Utility {
                 temp = new TreeNode<>(null);
                 temp.setNodeWeight((tree.getNodeWeight() + least.getFrequency()));
                 rightChild = new TreeNode<>(least.getData().toString());
+                rightChild.setNodeWeight(least.getFrequency());
                 temp.setLeft(tree);
                 temp.setRight(rightChild);
                 tree = temp;
@@ -222,7 +223,9 @@ public class Utility {
                         c++;
                     }
                 }
-                if (c==0){
+                if (c>0){
+                    condition = 0;
+                }else{
                     condition = 1;
                 }
             }
@@ -236,6 +239,7 @@ public class Utility {
                     temp = new TreeNode<>(null);
                     temp.setNodeWeight((tree2.getNodeWeight() + least.getFrequency()));
                     rightChild = new TreeNode<>(least.getData().toString());
+                    rightChild.setNodeWeight(least.getFrequency());
                     temp.setLeft(tree2);
                     temp.setRight(rightChild);
                     tree2 = temp;
@@ -246,7 +250,9 @@ public class Utility {
                             c++;
                         }
                     }
-                    if (c==0){
+                    if (c>0){
+                        condition = 0;
+                    }else{
                         condition = 1;
                     }
                     // if all elements are used
@@ -265,7 +271,7 @@ public class Utility {
             // if next element is lesser than the value of the root
             // Saves the next least element to variable least2
             // initializes tree2
-            else {
+            else if (tree.compareTo(least.getFrequency()) > 0){
                 least2 = new Token<>();
                 for (Token<T> token : tokens) {
                     // if (token.getFrequency() > least.getFrequency())
@@ -295,7 +301,9 @@ public class Utility {
                         c++;
                     }
                 }
-                if (c==0){
+                if (c>0){
+                    condition = 0;
+                }else{
                     condition = 1;
                 }
 
