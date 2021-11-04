@@ -276,7 +276,32 @@ public class Utility {
         }
     }
 
+    public List<Token<String>> parseTokenList (String charText, String bitText) {
+        List<String> characterTemp;
+        List<String> binTemp;
+        List<Token<String>> tokens = new ArrayList<>();
 
+        // Split by comma, strip whitespaces
+        characterTemp = Arrays.asList(charText.split("\\s*,\\s*"));
+        binTemp = Arrays.asList(bitText.split("\\s*,\\s*"));
+
+        // Eliminate Duplicates
+        List<String> characters = characterTemp.stream()
+                .distinct()
+                .collect(Collectors.toList());
+        List<String> binList = binTemp;
+
+
+        if (characters.size() != binList.size()) {
+            throw new ArgumentMismatchException("Inputted parameters are not equal in length.");
+        }
+
+        for (int i = 0; i < characters.size(); i++) {
+            tokens.add(new Token<>(characters.get(i)));
+            tokens.get(i).setNumberOfBits(Integer.parseInt(binTemp.get(i)));
+        }
+        return tokens;
+    }
 
     public <T> void showHuffmanTable(List<Token<T>> tokenList) {
         for (var tok : tokenList) System.out.println(tok.getData() + " " + tok.getHuffmanCode());
