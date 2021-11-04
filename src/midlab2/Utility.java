@@ -50,6 +50,36 @@ public class Utility {
         return tokens;
 }
 
+
+   public List<Token<String>> parseTokenList (String charText, String bitText) {
+       List<String> characterTemp;
+       List<String> binTemp;
+       List<Token<String>> tokens = new ArrayList<>();
+
+        // Split by comma, strip whitespaces
+       characterTemp = Arrays.asList(charText.split("\\s*,\\s*"));
+       binTemp = Arrays.asList(charText.split("\\s*,\\s*"));
+
+        // Eliminate Duplicates
+        List<String> characters = characterTemp.stream()
+                .distinct()
+                .collect(Collectors.toList());
+        List<String> binList = binTemp.stream()
+                .distinct()
+                .collect(Collectors.toList());
+
+
+        if (characters.size() != binList.size()) {
+            throw new ArgumentMismatchException("Inputted parameters are not equal in length.");
+        }
+
+        for (int i = 0; i < characters.size(); i++) {
+            tokens.add(new Token<>(characters.get(i)));
+            tokens.get(i).setNumberOfBits(Integer.parseInt(binTemp.get(i)));
+        }
+        return tokens;
+   }
+
     // TODO: 10/30/2021 @Jerome, Kurt
    public <T> List<Token<T>> huffmanToText(String string, List<Token<T>> tokenList)
             throws ArgumentMismatchException {
