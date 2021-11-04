@@ -365,10 +365,14 @@ public class Utility {
    }
 
     private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
+         // root is represented by -1, don't push it to the stack
         if (stackElement != -1) treeStack.push(stackElement);
 
         node.setHasVisited(true);
 
+        // if the node is a leaf
+        // and that leaf does not match the element
+        // remove it from the stack
         if (node.isLeaf()) {
             if (!node.getData().equals(element))
                 treeStack.pop();
@@ -377,11 +381,19 @@ public class Utility {
 
         //if(!treeStack.isEmpty() && node.getData() != element) treeStack.pop();
 
+        // if the node is not empty and it equals the element passed
+        // start returning from the call stack
         if (node.getData() != null && node.getData().equals(element)) {
             return;
         }
 
-
+        /*
+            CONSTRAINTS:
+                1. The Node is not a leaf
+                2. The Children of the node have been visited
+                3. The Children of the node's element does not match the passed element
+                If so, pop the stack
+         */
         if (!node.isLeaf() && node.getLeft().hasVisited() && node.getRight().hasVisited() && !node.getLeft().getData().equals(element) && !node.getRight().getData().equals(element)) {
             treeStack.pop();
         }
