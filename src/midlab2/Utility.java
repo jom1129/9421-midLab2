@@ -173,10 +173,25 @@ public class Utility {
         TreeNode<String> rightChild;
 
         int condition = 0;
-        int c;
+        int c=0;
+        Token<T> single = new Token<>();
         Token<T> least = new Token<>();
         Token<T> least2 = new Token<>();
 
+        // counts number of token
+        for(Token<T> token : tokens){
+            c++;
+            single = token;
+        }
+        
+        // creates a tree with no left and right node
+        if(c==1){
+            tree = new TreeNode<>(single.getData().toString());
+            tree.setNodeWeight(single.getFrequency());
+            return new Tree<>(tree);
+        }
+
+         
         // Saves the least element to variable least
         for (Token<T> token : tokens){
             if (least.getData() == null){
