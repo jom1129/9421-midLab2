@@ -51,7 +51,7 @@ public class Utility {
 }
 
     // TODO: 10/30/2021 @Jerome, Kurt
-   public <T> List<Token<T>> huffmanToText(String string, List<Token<T>> tokenList)
+   public <T> List<String> huffmanToText(String string, List<Token<T>> tokenList)
             throws ArgumentMismatchException {
 
         String temp = string;
@@ -61,7 +61,7 @@ public class Utility {
         StringBuilder input = new StringBuilder(string);
         StringBuilder code = new StringBuilder();
         // List<String> charList = Arrays.asList(temp.split(","));
-        List<Token<T>> output = new ArrayList<>();
+        List<String> output = new ArrayList<>();
         List<Token<T>> equalB = new ArrayList<>();
 
 
@@ -100,10 +100,10 @@ public class Utility {
             //      delete the code in the input
             for (Token<T> token : equalB) {
                 if (token.getHuffmanCode().equals(code.toString())) {
-                    output.add(token);
+                    output.add(token.getData().toString());
                     input.delete(0, leastB.getNumberOfBits());
                     leastB = new Token<>();
-                    tempB = new Token<>();
+                    tempB = new Token<>(null, 0, "");
                     condition = 1;
                 }
             }
@@ -113,6 +113,7 @@ public class Utility {
                 tempB = leastB;
                 leastB = new Token<>();
             }
+            code = new StringBuilder();
             //resets equalB
             equalB = new ArrayList<>();
         }
@@ -124,6 +125,7 @@ public class Utility {
        Sets up the Forest of Trees
        Similar to that of page 22
      */
+
      public <T> Tree<String> forestBuilder(List<Token<T>> tokens) {
 
         int n = tokens.size();
@@ -442,5 +444,13 @@ public class Utility {
 
     public <T> void showHuffmanTable(List<Token<T>> tokenList) {
         for (var tok : tokenList) System.out.println(tok.getData() + " " + tok.getHuffmanCode());
+    }
+
+    public <T> String showHuffmanToTextOutput(List<String> list) {
+        StringBuilder s = new StringBuilder();
+        for (var tok : list) {
+            s.append(tok);
+        }
+        return s.toString();
     }
 }
