@@ -78,7 +78,7 @@ public class Utility {
 
         while (input.length() != 0) {
             condition = 0;
-            
+
             // if bits of token is greater than tempB
             // saves the least number of tokens to leastB
             for (Token<T> token : tokenList) {
@@ -91,7 +91,7 @@ public class Utility {
                     }
                 }
             }
-        
+
             // saves all tokens that have equal bits to List<Token<T>> equalB
             for (Token<T> token : tokenList){
                 if (leastB.getNumberofBits() == token.getNumberofBits()){
@@ -117,7 +117,7 @@ public class Utility {
                     condition = 1;
                 }
             }
-            // if there is no equal huffman code 
+            // if there is no equal huffman code
             // save leastB to tempB (to get the next least bit)
             if (condition == 0){
                 tempB = leastB;
@@ -175,9 +175,9 @@ public class Utility {
              q.poll();
 
              // new node f which is equal
-             TreeNode f = new TreeNode(x.getNodeWeight() + y.getNodeWeight());
+             TreeNode f = new TreeNode("-");
 
-             f.setData('-');
+             f.setNodeWeight(x.getNodeWeight() + y.getNodeWeight());
 
              // first extracted node as left child.
              f.setLeft(x);
@@ -210,28 +210,6 @@ public class Utility {
 
     }
 
-    public <T> void setHuffmanCodeAlter(Tree<T> forest, List<Token<T>> forestList) {
-        for(Token<T> node : forestList) {
-            setHuffmanCodeAlter(forest.getRoot(), node.getData());
-            var temp = stackToString(treeStack);
-            node.setHuffmanCode(temp);
-            // Empty the stack
-            treeStack.clear();
-            // Clear hasVisited property
-            forest.clearHasVisited();
-        }
-
-    }
-
-   private String setHuffmanCodeAlter(TreeNode<String> node, String s) {
-         if (node.isLeaf() &&
-         Character.isLetter(node.getData().charAt(0)))
-             return s;
-
-         setHuffmanCodeAlter(node.getLeft(), s + "0");
-         setHuffmanCodeAlter(node.getRight(), s + "1");
-         return s;
-   }
     private <T> void setHuffmanCode(TreeNode<T> node, T element) {
         setHuffmanCode(node, element, -1);
     }
@@ -246,7 +224,6 @@ public class Utility {
                 treeStack.pop();
             return;
         }
-
         //if(!treeStack.isEmpty() && node.getData() != element) treeStack.pop();
 
         if (node.getData() != null && node.getData().equals(element)) {
