@@ -186,6 +186,7 @@ public class Interface {
                 } else {
                     // tokenList = utility.parseTokenList(charInputText.getText(), binInputText.getText());
                     utility.huffmanToText(userInputText.getText(), tokenList);
+                    huffmanToTextOutputField.setDocument(outputField.getDocument());
                 }
             } catch (ArgumentMismatchException arg) {
                 JOptionPane.showMessageDialog(null,
