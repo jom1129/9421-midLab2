@@ -336,6 +336,7 @@ public class Utility {
 
     private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
         if (stackElement != -1) treeStack.push(stackElement);
+
         node.setHasVisited(true);
 
         if (node.isLeaf()) {
@@ -346,10 +347,12 @@ public class Utility {
 
         //if(!treeStack.isEmpty() && node.getData() != element) treeStack.pop();
 
-        if (node.getData() != null && node.getData().equals(element)) return;
+        if (node.getData() != null && node.getData().equals(element)) {
+            return;
+        }
 
-        if (!node.isLeaf() && node.getLeft().hasVisited() &&
-            node.getRight().hasVisited() && !node.getData().equals(element)) {
+
+        if (!node.isLeaf() && node.getLeft().hasVisited() && node.getRight().hasVisited() && !node.getLeft().getData().equals(element) && !node.getRight().getData().equals(element)) {
             treeStack.pop();
         }
 
