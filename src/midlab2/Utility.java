@@ -4,6 +4,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+class MyComparator implements Comparator<TreeNode> {
+    public int compare(TreeNode x, TreeNode y)
+    {
+
+        return x.getNodeWeight() - y.getNodeWeight();
+    }
+}
 public class Utility {
     LinkedStack<Integer> treeStack = new LinkedStack<>();
     // TODO: 10/30/2021 @Enrico 
@@ -19,6 +26,7 @@ public class Utility {
         string.append(scan.nextLine());
         return string.toString();
     }
+
 
     /* TODO: 10/30/2021 @CJ
        Determines the frequency of each character
@@ -136,183 +144,64 @@ public class Utility {
        Similar to that of page 22
      */
      public <T> Tree<String> forestBuilder(List<Token<T>> tokens) {
-        TreeNode<String> tree;
-        TreeNode<String> tree2 = null;
-        TreeNode<String> temp;
-        TreeNode<String> leftChild;
-        TreeNode<String> rightChild;
 
-        int condition = 0;
-        int c;
-        Token<T> least = new Token<>();
-        Token<T> least2 = new Token<>();
+        int n = tokens.size();
+        Collections.sort(tokens);
 
-        // Saves the least element to variable least
-        for (Token<T> token : tokens){
-            if (least.getData() == null){
-                least = token;
-            }
-            else {
-                if (least.compareTo(token) > 0 ) {
-                    least = token;
-                }
-            }
-        }
+        PriorityQueue<TreeNode> q = new PriorityQueue<TreeNode>(n, new MyComparator());
 
-        // Saves the 2nd least element to variable least2
-        for (Token<T> token : tokens){
-            if (least2.getData() == null){
-                least2 = token;
-            }
-            else {
-                if (least2.compareTo(token) >= 0) {
-                    if (token.getData() != least.getData()){
-                        least2 = token;
-                    }
-                }
-            }
-        }
+         for (int i = 0; i < n; i++) {
 
-        // initializing 1st tree
-        // tree = new TreeNode<>((least.getFrequency() + least2.getFrequency()));
-        tree = new TreeNode<>(null);
-        tree.setNodeWeight((least.getFrequency() + least2.getFrequency()));
-        leftChild = new TreeNode<>(least.getData().toString());
-        leftChild.setNodeWeight(least.getFrequency());
-        rightChild = new TreeNode<>(least2.getData().toString());
-        rightChild.setNodeWeight(least2.getFrequency());
-        tree.setLeft(leftChild);
-        tree.setRight(rightChild);
+             // creating a Huffman node object
+             // and add it to the priority queue.
+             TreeNode tn = new TreeNode(tokens.get(i).getData());
 
+             tn.setNodeWeight(tokens.get(i).getFrequency());
 
-        while (condition != 1) {
-            c = 0;
+             tn.setLeft(null);
+             tn.setRight(null);
 
-            // Saves the next least element to variable least
-            least = new Token<>();
-            for (Token<T> token : tokens) {
-                //if (token.getFrequency() > least2.getFrequency())
-                if (token.compareTo(least2) > 0) {
-                    if (least.getData() == null) {
-                        least = token;
-                    } else {
-                        //(least.getFrequency() > token.getFrequency())
-                        if (least.compareTo(token) > 0) {
-                            least = token;
-                        }
-                    }
-                }
-            }
+             // add functions adds
+             // the huffman node to the queue.
+             q.add(tn);
+         }
 
-            // if next element is greater or equal to than the value of the root
-            // sets the element as the right child of the tree
-            // if (tree.getNodeWeight() < least.getFrequency())
-            if (tree.compareTo(least.getFrequency()) <= 0) {
-                //temp = new TreeNode<>((tree.getData() + least.getFrequency()));
-                temp = new TreeNode<>(null);
-                temp.setNodeWeight((tree.getNodeWeight() + least.getFrequency()));
-                rightChild = new TreeNode<>(least.getData().toString());
-                rightChild.setNodeWeight(least.getFrequency());
-                temp.setLeft(tree);
-                temp.setRight(rightChild);
-                tree = temp;
-                least2 = least;
-                for (Token<T> token : tokens){
-                    //if (token.getFrequency() > least2.getFrequency())
-                    if (token.compareTo(least2) > 0){
-                        c++;
-                    }
-                }
-                if (c>0){
-                    condition = 0;
-                }else{
-                    condition = 1;
-                }
-            }
+         // create a root node
+         TreeNode root = null;
 
-            // if tree2 is not null
-            // sets the element as the right child of tree2
-            else if (tree2 != null){
-                // if (tree2.getNodeWeight() < least.getFrequency())
-                if (tree2.compareTo(least.getFrequency()) < 0){
-                    //temp = new TreeNode<>((tree2.getData() + least.getFrequency()));
-                    temp = new TreeNode<>(null);
-                    temp.setNodeWeight((tree2.getNodeWeight() + least.getFrequency()));
-                    rightChild = new TreeNode<>(least.getData().toString());
-                    rightChild.setNodeWeight(least.getFrequency());
-                    temp.setLeft(tree2);
-                    temp.setRight(rightChild);
-                    tree2 = temp;
-                    least2 = least;
-                    for (Token<T> token : tokens){
-                        // if (token.getFrequency() > least2.getFrequency())
-                        if (token.compareTo(least2) > 0){
-                            c++;
-                        }
-                    }
-                    if (c>0){
-                        condition = 0;
-                    }else{
-                        condition = 1;
-                    }
-                    // if all elements are used
-                    // sets the parent of tree and tree2 to temp and save temp to tree
-                    if (condition == 1){
-                        //temp = new TreeNode<>((tree.getData() + tree2.getData()));
-                        temp = new TreeNode<>(null);
-                        temp.setNodeWeight((tree.getNodeWeight()) + tree2.getNodeWeight());
-                        temp.setLeft(tree);
-                        temp.setRight(tree2);
-                        tree = temp;
-                    }
-                }
-            }
+         // Here we will extract the two minimum value
+         // from the heap each time until
+         // its size reduces to 1, extract until
+         // all the nodes are extracted.
+         while (q.size() > 1) {
 
-            // if next element is lesser than the value of the root
-            // Saves the next least element to variable least2
-            // initializes tree2
-            else if (tree.compareTo(least.getFrequency()) > 0){
-                least2 = new Token<>();
-                for (Token<T> token : tokens) {
-                    // if (token.getFrequency() > least.getFrequency())
-                    if (token.compareTo(least) > 0) {
-                        if (least2.getData() == null) {
-                            least2 = token;
-                        } else {
-                            // if (least2.getFrequency() > token.getFrequency())
-                            if (least2.compareTo(token) > 0) {
-                                least2 = token;
-                            }
-                        }
-                    }
-                }
-                //tree2 = new TreeNode<>((least.getFrequency() + least2.getFrequency()));
-                tree2 = new TreeNode<>(null);
-                tree2.setNodeWeight((least.getFrequency() + least2.getFrequency()));
-                leftChild = new TreeNode<>(least.getData().toString());
-                leftChild.setNodeWeight(least.getFrequency());
-                rightChild = new TreeNode<>(least2.getData().toString());
-                rightChild.setNodeWeight(least2.getFrequency());
-                tree2.setLeft(leftChild);
-                tree2.setRight(rightChild);
-                for (Token<T> token : tokens){
-                    // if (token.getFrequency() > least2.getFrequency())
-                    if (token.compareTo(least2) > 0){
-                        c++;
-                    }
-                }
-                if (c>0){
-                    condition = 0;
-                }else{
-                    condition = 1;
-                }
+             // first min extract.
+             TreeNode x = q.peek();
+             q.poll();
 
+             // second min extract.
+             TreeNode y = q.peek();
+             q.poll();
 
-            }
-        }
+             // new node f which is equal
+             TreeNode f = new TreeNode(x.getNodeWeight() + y.getNodeWeight());
 
+             f.setData('-');
 
-        return new Tree<>(tree);
+             // first extracted node as left child.
+             f.setLeft(x);
+
+             // second extracted node as the right child.
+             f.setRight(y);
+
+             // marking the f node as the root node.
+             root = f;
+
+             // add this node to the priority-queue.
+             q.add(f);
+         }
+
+        return new Tree<>(root);
     }
 
     // TODO: 10/30/2021 @Kurt
