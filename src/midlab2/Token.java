@@ -53,10 +53,14 @@ public class Token<T> implements Comparable<Token<T>> {
         return huffmanCode;
     }
     
-     public int getNumberofBits(){
+     public int getNumberOfBits(){
         for(int i = 0; i < this.getHuffmanCode().length(); i++) {
             numberOfBits++;
         }
+        return numberOfBits;
+    }
+
+    public int HATDOG() {
         return numberOfBits;
     }
 

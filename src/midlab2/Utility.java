@@ -9,6 +9,7 @@ class MyComparator implements Comparator<TreeNode> {
     {
 
         return x.getNodeWeight() - y.getNodeWeight();
+        // return y.getNodeWeight() - x.getNodeWeight();
     }
 }
 public class Utility {
@@ -59,21 +60,10 @@ public class Utility {
         Token<T> tempB = new Token<>(null, 0, "");
         StringBuilder input = new StringBuilder(string);
         StringBuilder code = new StringBuilder();
-        List<String> charList = Arrays.asList(temp.split(","));
+        // List<String> charList = Arrays.asList(temp.split(","));
         List<Token<T>> output = new ArrayList<>();
         List<Token<T>> equalB = new ArrayList<>();
 
-
-        List<Integer> frequencyList = Arrays.stream(temp.split(","))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-
-        // Exception block
-        if (charList.size() != frequencyList.size()) {
-            if (charList.size() < frequencyList.size())
-                throw new ArgumentMismatchException("Too many inputted frequencies.");
-            else throw new ArgumentMismatchException("Too many inputted tokens.");
-        }
 
 
         while (input.length() != 0) {
@@ -82,11 +72,11 @@ public class Utility {
             // if bits of token is greater than tempB
             // saves the least number of tokens to leastB
             for (Token<T> token : tokenList) {
-                if (token.getNumberofBits() > tempB.getNumberofBits()) {
+                if (token.getNumberOfBits() > tempB.getNumberOfBits()) {
                     if (leastB.getData() == null) {
                         leastB = token;
                     }
-                    if ((leastB.getNumberofBits() > token.getNumberofBits())) {
+                    if ((leastB.getNumberOfBits() > token.getNumberOfBits())) {
                         leastB = token;
                     }
                 }
@@ -94,13 +84,13 @@ public class Utility {
 
             // saves all tokens that have equal bits to List<Token<T>> equalB
             for (Token<T> token : tokenList){
-                if (leastB.getNumberofBits() == token.getNumberofBits()){
+                if (leastB.getNumberOfBits() == token.getNumberOfBits()){
                     equalB.add(token);
                 }
             }
 
             // Gets the code of the input based on the least number of bits and saves it to StringBuilder code
-            for (int i = 0; i < leastB.getNumberofBits(); i++) {
+            for (int i = 0; i < leastB.getNumberOfBits(); i++) {
                 code.append(input.charAt(i));
             }
 
@@ -111,7 +101,7 @@ public class Utility {
             for (Token<T> token : equalB) {
                 if (token.getHuffmanCode().equals(code.toString())) {
                     output.add(token);
-                    input.delete(0, leastB.getNumberofBits());
+                    input.delete(0, leastB.getNumberOfBits());
                     leastB = new Token<>();
                     tempB = new Token<>();
                     condition = 1;
@@ -139,7 +129,7 @@ public class Utility {
         int n = tokens.size();
         Collections.sort(tokens);
 
-        PriorityQueue<TreeNode> q = new PriorityQueue<TreeNode>(n, new MyComparator());
+        PriorityQueue<TreeNode> q = new PriorityQueue<>(n, new MyComparator());
 
          for (int i = 0; i < n; i++) {
 
@@ -197,6 +187,7 @@ public class Utility {
 
     // TODO: 10/30/2021 @Kurt
     // To be used with forestBuilder
+    /* FOOTER
     public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
         for(Token<T> node : forestList) {
             setHuffmanCode(forest.getRoot(), node.getData());
@@ -237,6 +228,162 @@ public class Utility {
 
         setHuffmanCode(node.getLeft(), element, 0);
         setHuffmanCode(node.getRight(), element, 1);
+    }
+    FOOTER2
+     */
+
+    public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
+        StringBuilder bits = new StringBuilder();
+        int max = 0;
+        int c = 0;
+        TreeNode<T> root = forest.getRoot();
+        TreeNode<T> current = root;
+
+        // Gets the maximum bits
+        while(!current.isLeaf()){
+            current = current.getLeft();
+            max++;
+        }
+        current = root;
+
+        while(!current.getLeft().hasVisited()) {
+            if (max == 0) break;
+            current = current.getLeft();
+            if (current.isLeaf()) {
+                for (Token<T> token : forestList) {
+                    if (token.getData() == current.getData()) {
+                        while (c < max) {
+                            bits.append("0");
+                            c++;
+                        }
+                        token.setHuffmanCode(bits.toString());
+                        bits = new StringBuilder();
+                        c = 0;
+                        current.setHasVisited(true);
+                    }
+                }
+                current = root;
+                while (!current.getLeft().hasVisited()) {
+                    current = current.getLeft();
+                }
+                current.setHasVisited(true);
+                current = current.getRight();
+                for (Token<T> token : forestList) {
+                    if (token.getData() == current.getData()) {
+                        while (c < max - 1) {
+                            bits.append("0");
+                            c++;
+                        }
+                        bits.append("1");
+                        token.setHuffmanCode(bits.toString());
+                        bits = new StringBuilder();
+                        c = 0;
+                        max = max - 2;
+                    }
+                }
+                current = root;
+            }
+            if(current.getLeft().hasVisited()){
+                current.setHasVisited(true);
+                current = current.getRight();
+                for (Token<T> token : forestList) {
+                    if (token.getData() == current.getData()) {
+                        while (c < max) {
+                            bits.append("0");
+                            c++;
+                        }
+                        bits.append("1");
+                        token.setHuffmanCode(bits.toString());
+                        bits = new StringBuilder();
+                        c = 0;
+                        max = max - 1;
+                    }
+                }
+                current = root;
+            }
+        }
+
+        current = root;
+        current = current.getRight();
+        max = 1;
+        if (current.isLeaf()){
+            for (Token<T> token : forestList) {
+                if (token.getData() == current.getData()) {
+                    bits.append("1");
+                    token.setHuffmanCode(bits.toString());
+                    bits = new StringBuilder();
+                }
+            }
+        }
+        else {
+            while (!current.isLeaf()) {
+                current = current.getLeft();
+                max++;
+            }
+            current = root;
+            current = current.getRight();
+            while (!current.getLeft().hasVisited()) {
+                if (max == 0) break;
+                current = current.getLeft();
+                if (current.isLeaf()) {
+                    for (Token<T> token : forestList) {
+                        if (token.getData() == current.getData()) {
+                            bits.append("1");
+                            while (c < max - 1) {
+                                bits.append("0");
+                                c++;
+                            }
+                            token.setHuffmanCode(bits.toString());
+                            bits = new StringBuilder();
+                            c = 0;
+                            current.setHasVisited(true);
+                        }
+                    }
+                    current = root;
+                    current = current.getRight();
+                    while (!current.getLeft().hasVisited()) {
+                        current = current.getLeft();
+                    }
+                    current.setHasVisited(true);
+                    current = current.getRight();
+                    for (Token<T> token : forestList) {
+                        if (token.getData() == current.getData()) {
+                            bits.append("1");
+                            while (c < max - 2) {
+                                bits.append("0");
+                                c++;
+                            }
+                            bits.append("1");
+                            token.setHuffmanCode(bits.toString());
+                            bits = new StringBuilder();
+                            c = 0;
+                            max = max - 2;
+                        }
+                    }
+                    current = root;
+                    current = current.getRight();
+                    if (current.getLeft().hasVisited()) {
+                        current.setHasVisited(true);
+                        current = current.getRight();
+                        for (Token<T> token : forestList) {
+                            if (token.getData() == current.getData()) {
+                                bits.append("1");
+                                while (c < max - 1) {
+                                    bits.append("0");
+                                    c++;
+                                }
+                                bits.append("1");
+                                token.setHuffmanCode(bits.toString());
+                                bits = new StringBuilder();
+                                c = 0;
+                                max = max - 1;
+                            }
+                        }
+                        current = root;
+                    }
+                }
+            }
+        }
     }
 
     private String stackToString(LinkedStack<Integer> stack) {

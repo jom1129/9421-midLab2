@@ -37,10 +37,17 @@ public class Interface {
     private JPanel outputPanel = new JPanel();
     private JPanel authorsPanel = new JPanel();
 
+    private JPanel huffmanToTextTableValPanel = new JPanel();
+    private JPanel huffmanGetCodePanel = new JPanel();
+    private JPanel huffmanToTextOperationsPanel = new JPanel();
+    private JPanel huffmanOutputPanel = new JPanel();
+
+
 
     // Buttons
     private JButton submit = new JButton("Submit");
     private JButton clear = new JButton("Clear");
+    private JButton submitHuffmanToText = new JButton("Submit");
 
     // JCombobox for Selecting Options for Encode / Decode
     String[] options = { "Encode Text", "Decode Huffman Code" };
@@ -62,6 +69,16 @@ public class Interface {
     private JTextArea outputField = new JTextArea(DEFAULT_ROWS, DEFAULT_COLUMNS);
     private JScrollPane outputScrollPane = new JScrollPane(outputField);
 
+    private JTextArea huffmanToTextTableArea = new JTextArea(DEFAULT_ROWS, DEFAULT_COLUMNS);
+    private JScrollPane huffmanToTextTablePane = new JScrollPane(huffmanToTextTableArea);
+
+    private JTextArea huffmanGetInputField = new JTextArea(DEFAULT_ROWS, DEFAULT_COLUMNS);
+    private JScrollPane huffmanGetInputFieldPane = new JScrollPane(huffmanGetInputField);
+
+    private JTextArea huffmanToTextOutputField = new JTextArea(DEFAULT_ROWS, DEFAULT_COLUMNS);
+    private JScrollPane huffmanToTextOutputPane = new JScrollPane(huffmanToTextOutputField);
+
+
     // Authors JTextArea
     private JTextArea authorsField = new JTextArea(15, DEFAULT_COLUMNS);
     private JScrollPane authorsScrollPane = new JScrollPane(authorsField);
@@ -76,8 +93,16 @@ public class Interface {
     private JComponent[] authorsPanelComponents = { new JLabel("Authors: "), authorsScrollPane };
 
     // JComponent Arrays for nesting JPanels within JPanels
-    private JComponent[] textToHuffmanPanelComponents = { authorsPanel };
-    private JComponent[] huffmanToTextPanelComponents = { charPanel, binaryPanel };
+    private JComponent[] textToHuffmanPanelComponents = { authorsPanel, outputPanel };
+    private JComponent[] huffmanToTextPanelComponents = { huffmanToTextTableValPanel, huffmanGetCodePanel,
+                        huffmanToTextOperationsPanel, huffmanOutputPanel};
+
+    // NEW JCOMPONENT ARRAYS
+    private JComponent[] huffmanToTextTableValComponents = { new JLabel("Table Values: "), huffmanToTextTablePane };
+    private JComponent[] huffmanGetCodePanelComponents = { new JLabel("Huffman Code: "), huffmanGetInputFieldPane };
+    private JComponent[] huffmanToTextOperationsPanelComponents = { submitHuffmanToText };
+    private JComponent[] huffmanOutputPanelComponents = { new JLabel("Output: "), huffmanToTextOutputPane };
+
 
     // JComponent Arrays for clearing TextFields
     private JTextArea[] clearableTextFields = { userInputText, charInputText, binInputText, outputField };
@@ -125,7 +150,7 @@ public class Interface {
         for (var component : inputTypePanelComponents) inputTypePanel.add(component);
         operationType.addItemListener((ItemEvent e) -> {
             CardLayout cardLayout = (CardLayout) mainCardPanel.getLayout();
-            for(var text : clearableTextFields)text.setText("");
+            // for(var text : clearableTextFields)text.setText("");
             cardLayout.show(mainCardPanel, (String) e.getItem());
         });
         operationType.setSelectedIndex(0);
@@ -136,6 +161,18 @@ public class Interface {
         // Binary Input Panel
         for (var component : binInputPanelComponents) binaryPanel.add(component);
 
+        // Huffman Table Text
+        for (var component : huffmanToTextTableValComponents) huffmanToTextTableValPanel.add(component);
+
+        // Huffman get expression
+        for (var component : huffmanGetCodePanelComponents) huffmanGetCodePanel.add(component);
+
+        // Huffman buttons
+        for (var component : huffmanToTextOperationsPanelComponents) huffmanToTextOperationsPanel.add(component);
+
+        // Huffman Output
+        for (var component : huffmanOutputPanelComponents) huffmanOutputPanel.add(component);
+
         // Button Panel Components
         for (var component : buttonPanelComponents) buttonPanel.add(component);
         submit.addActionListener((ActionEvent e) -> {
@@ -145,8 +182,9 @@ public class Interface {
                     forest = utility.forestBuilder(tokenList);
                     utility.setHuffmanCode(forest, tokenList);
                     utility.showHuffmanTable(tokenList);
+                    huffmanToTextTableArea.setDocument(outputField.getDocument());
                 } else {
-                    tokenList = utility.parseTokenList(charInputText.getText(), binInputText.getText());
+                    // tokenList = utility.parseTokenList(charInputText.getText(), binInputText.getText());
                     utility.huffmanToText(userInputText.getText(), tokenList);
                 }
             } catch (ArgumentMismatchException arg) {
@@ -157,13 +195,20 @@ public class Interface {
                         inputException.getMessage());
             } catch (NumberFormatException | NullPointerException num) {
                 JOptionPane.showMessageDialog(null,
-                        "Invalid Input.");
+                        num.getMessage());
             }
         });
 
         clear.addActionListener((ActionEvent e) -> {
             for (var text : clearableTextFields) text.setText("");
-        } );
+        });
+
+        submitHuffmanToText.addActionListener((ActionEvent e) -> {
+            outputField.setText("");
+            utility.huffmanToText(huffmanGetInputField.getText(),tokenList);
+            huffmanToTextOutputField.setText(outputField.getText());
+        });
+
 
         // Authors Panel
         AUTHORS = """
@@ -216,7 +261,7 @@ public class Interface {
         frame.getContentPane().add(gui.getInputTypePanel());
         frame.getContentPane().add(gui.getButtonPanel());
         frame.getContentPane().add(gui.getMainCardPanel());
-        frame.getContentPane().add(gui.getOutputPanel());
+        // frame.getContentPane().add(gui.getOutputPanel());
 
         // Display the Window
         frame.pack();
