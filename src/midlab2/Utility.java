@@ -317,8 +317,8 @@ public class Utility {
 
     // TODO: 10/30/2021 @Kurt
     // To be used with forestBuilder
-    public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
-        for(Token<T> node : forestList) {
+   public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
+      for(Token<T> node : forestList) {
             setHuffmanCode(forest.getRoot(), node.getData());
             var temp = stackToString(treeStack);
             node.setHuffmanCode(temp);
@@ -330,13 +330,13 @@ public class Utility {
 
     }
 
-    private <T> void setHuffmanCode(TreeNode<T> node, T element) {
-        setHuffmanCode(node, element, -1);
-    }
+   private <T> void setHuffmanCode(TreeNode<T> node, T element) {
+      setHuffmanCode(node, element, -1);
+   }
 
-    private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
-        if (stackElement != -1) treeStack.push(stackElement);
-        node.setHasVisited(true);
+   private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
+       if (stackElement != -1) treeStack.push(stackElement);
+       node.setHasVisited(true);
 
         if (node.isLeaf()) {
             if (!node.getData().equals(element))
@@ -355,16 +355,16 @@ public class Utility {
 
         setHuffmanCode(node.getLeft(), element, 0);
         setHuffmanCode(node.getRight(), element, 1);
-    }
+   }
 
-    private String stackToString(LinkedStack<Integer> stack) {
+   private String stackToString(LinkedStack<Integer> stack) {
         StringBuilder toInt = new StringBuilder();
         while (!stack.isEmpty() && stack.getTop().getLink() != null && stack.getTop().getInfo() != -1)
             if (stack.peek() != -1) toInt.append(stack.pop());
         return toInt.toString();
     }
 
-    private void reverseStack() {
+   private void reverseStack() {
         if (!treeStack.isEmpty()) {
             Integer temp = treeStack.peek();
             treeStack.pop();
@@ -375,7 +375,7 @@ public class Utility {
 
     }
 
-    private void reverseStack(Integer x) {
+   private void reverseStack(Integer x) {
         if (treeStack.isEmpty()) treeStack.push(x);
         else {
             Integer temp = treeStack.peek();
@@ -386,7 +386,7 @@ public class Utility {
 
 
 
-    public <T> void showHuffmanTable(List<Token<T>> tokenList) {
-        for (var tok : tokenList) System.out.println(tok.getData() + " " + tok.getHuffmanCode());
+   public <T> void showHuffmanTable(List<Token<T>> tokenList) {
+       for (var tok : tokenList) System.out.println(tok.getData() + " " + tok.getHuffmanCode());
     }
 }
