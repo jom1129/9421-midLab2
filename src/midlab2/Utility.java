@@ -442,8 +442,13 @@ public class Utility {
         return tokens;
     }
 
-    public <T> void showHuffmanTable(List<Token<T>> tokenList) {
-        for (var tok : tokenList) System.out.println(tok.getData() + " " + tok.getHuffmanCode());
+    public <T> void showHuffmanTable(List<Token<String>> tokenList) {
+        // Sort tokens in their natural order
+        tokenList.sort(new TokenComparator());
+        System.out.printf("%-15s %-15s %-15s %-15s\n", "Character", "Frequency",
+                "Huffman Code", "Number of Bits");
+        for (var tok : tokenList) System.out.printf("%-15s %-15s %-15s %-15s\n", tok.getData(),
+                tok.getFrequency(), tok.getHuffmanCode(), tok.getNumberOfBits());
     }
 
     public <T> String showHuffmanToTextOutput(List<String> list) {
