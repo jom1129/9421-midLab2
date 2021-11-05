@@ -207,9 +207,13 @@ public class Interface {
         });
 
         submitHuffmanToText.addActionListener((ActionEvent e) -> {
-
-            huffman=utility.huffmanToText(huffmanGetInputField.getText(),tokenList);
-            huffmanToTextOutputField.setText(utility.showHuffmanToTextOutput(huffman));
+            try {
+                huffman=utility.huffmanToText(huffmanGetInputField.getText(),tokenList);
+                huffmanToTextOutputField.setText(utility.showHuffmanToTextOutput(huffman));
+            } catch (ArgumentMismatchException | IllegalArgumentException |
+                    NullPointerException  | StringIndexOutOfBoundsException arg) {
+                JOptionPane.showMessageDialog(null, "Invalid Input.");
+            }
         });
 
         for (var component : scrollables) {

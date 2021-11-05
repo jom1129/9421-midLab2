@@ -1,6 +1,7 @@
 package midlab2;
 
 import java.util.*;
+import java.util.function.LongUnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -15,7 +16,13 @@ class MyComparator implements Comparator<TreeNode> {
 }
 public class Utility {
     LinkedStack<Integer> treeStack = new LinkedStack<>();
+    String huffmanStack;
 
+    /**
+     * Creates a tokenList while setting the Data and frequency parameter
+     * @param userText input to be parsed
+     * @return a tokenList with the Data and Frequency parameter
+     */
     public List<Token<String>> determineFrequency(String userText) {
         List<Character> characters = new ArrayList<>(); // characters that are
                                                         // already detected
@@ -176,12 +183,12 @@ public class Utility {
 
         return new Tree<>(root);
     }
-    /* FOOTER2
+    /* footer
     // To be used with forestBuilder
     // Defunct method
-    public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
+    public <T> void setHuffmanCode(Tree<String> forest, List<Token<T>> forestList) {
         for(Token<T> node : forestList) {
-            setHuffmanCode(forest.getRoot(), node.getData());
+            setHuffmanCode(forest.getRoot(), "-1");
             var temp = stackToString(treeStack);
             node.setHuffmanCode(temp);
             // Empty the stack
@@ -220,8 +227,21 @@ public class Utility {
         setHuffmanCode(node.getLeft(), element, 0);
         setHuffmanCode(node.getRight(), element, 1);
     }
-    FOOTER2
-    */
+    footerlol
+*/
+
+    /* recursive
+    public <T> void setHuffmanCode(TreeNode<String> node, String s) {
+        if (s.equals("-1")) s = "";
+        if (node.isLeaf() && Character.isLetter(node.getData().charAt(0))) {
+            huffmanStack = s;
+            return;
+        }
+        setHuffmanCode(node.getLeft(), s + "0");
+        setHuffmanCode(node.getRight(), s + "1");
+    }
+    recursive
+     */
 
     public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
         StringBuilder bits = new StringBuilder();
