@@ -183,39 +183,6 @@ public class Utility {
 
         return new Tree<>(root);
     }
-    /* footer
-    // To be used with forestBuilder
-    // Defunct method
-   public <T> void setHuffmanCode(Tree<String> forest, List<Token<T>> forestList) {
-        for(Token<T> node : forestList) {
-            var temp = setHuffmanCode(forest.getRoot(), node.getData().toString(), "");
-            //var temp = stackToString(treeStack);
-            node.setHuffmanCode(temp);
-            // Empty the stack
-            //treeStack.clear();
-            // Clear hasVisited property
-            forest.clearHasVisited();
-        }
-    }
-
-
-    // recursive
-    public String setHuffmanCode(TreeNode<String> node, String s, String code) {
-        String result;
-        if (!node.isLeaf()) {
-            if ((result = setHuffmanCode(node.getLeft(), s, code + "0")) == null) {
-                result = setHuffmanCode(node.getRight(), s, code + "1");
-            }
-        } else {
-            if (s.equals(node.getData().toString()))
-                result = code;
-            else {
-                result = null;
-            }
-        }
-        return result;
-    }
-/*
     public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
         StringBuilder bits = new StringBuilder();
         int max = 0;
