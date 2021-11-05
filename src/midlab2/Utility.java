@@ -186,63 +186,36 @@ public class Utility {
     /* footer
     // To be used with forestBuilder
     // Defunct method
-    public <T> void setHuffmanCode(Tree<String> forest, List<Token<T>> forestList) {
+   public <T> void setHuffmanCode(Tree<String> forest, List<Token<T>> forestList) {
         for(Token<T> node : forestList) {
-            setHuffmanCode(forest.getRoot(), "-1");
-            var temp = stackToString(treeStack);
+            var temp = setHuffmanCode(forest.getRoot(), node.getData().toString(), "");
+            //var temp = stackToString(treeStack);
             node.setHuffmanCode(temp);
             // Empty the stack
-            treeStack.clear();
+            //treeStack.clear();
             // Clear hasVisited property
             forest.clearHasVisited();
         }
-
     }
 
-    private <T> void setHuffmanCode(TreeNode<T> node, T element) {
-        setHuffmanCode(node, element, -1);
+
+    // recursive
+    public String setHuffmanCode(TreeNode<String> node, String s, String code) {
+        String result;
+        if (!node.isLeaf()) {
+            if ((result = setHuffmanCode(node.getLeft(), s, code + "0")) == null) {
+                result = setHuffmanCode(node.getRight(), s, code + "1");
+            }
+        } else {
+            if (s.equals(node.getData().toString()))
+                result = code;
+            else {
+                result = null;
+            }
+        }
+        return result;
     }
-
-    private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
-        if (stackElement != -1) treeStack.push(stackElement);
-
-        node.setHasVisited(true);
-
-        if (node.isLeaf()) {
-            if (!node.getData().equals(element))
-                treeStack.pop();
-            return;
-        }
-        //if(!treeStack.isEmpty() && node.getData() != element) treeStack.pop();
-
-        if (node.getData() != null && node.getData().equals(element)) {
-            return;
-        }
-
-
-        if (!node.isLeaf() && node.getLeft().hasVisited() && node.getRight().hasVisited() && !node.getLeft().getData().equals(element) && !node.getRight().getData().equals(element)) {
-            treeStack.pop();
-        }
-
-        setHuffmanCode(node.getLeft(), element, 0);
-        setHuffmanCode(node.getRight(), element, 1);
-    }
-    footerlol
-*/
-
-    /* recursive
-    public <T> void setHuffmanCode(TreeNode<String> node, String s) {
-        if (s.equals("-1")) s = "";
-        if (node.isLeaf() && Character.isLetter(node.getData().charAt(0))) {
-            huffmanStack = s;
-            return;
-        }
-        setHuffmanCode(node.getLeft(), s + "0");
-        setHuffmanCode(node.getRight(), s + "1");
-    }
-    recursive
-     */
-
+/*
     public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
         StringBuilder bits = new StringBuilder();
         int max = 0;
@@ -396,7 +369,7 @@ public class Utility {
             }
         }
     }
-
+*/
     private String stackToString(LinkedStack<Integer> stack) {
         StringBuilder toInt = new StringBuilder();
         while (!stack.isEmpty() && stack.getTop().getLink() != null && stack.getTop().getInfo() != -1)
