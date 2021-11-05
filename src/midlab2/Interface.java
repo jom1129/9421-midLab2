@@ -222,9 +222,11 @@ public class Interface {
             try {
                 huffman = utility.huffmanToText(huffmanGetInputField.getText(), tokenList);
                 huffmanToTextOutputField.setText(utility.showHuffmanToTextOutput(huffman));
-            } catch (ArgumentMismatchException | IllegalArgumentException |
+            } catch (IllegalArgumentException |
                     NullPointerException | StringIndexOutOfBoundsException arg) {
                 JOptionPane.showMessageDialog(null, "Invalid Input.");
+            } catch (ArgumentMismatchException exception) {
+                JOptionPane.showMessageDialog(null, exception.getMessage());
             }
         });
 
@@ -242,9 +244,10 @@ public class Interface {
                 }
 
                 outputHuffmanCodeArea.setText(temp.toString());
-            } catch (ArgumentMismatchException | IllegalArgumentException |
-                    NullPointerException | StringIndexOutOfBoundsException arg) {
+            } catch (IllegalArgumentException | NullPointerException | StringIndexOutOfBoundsException arg) {
                 JOptionPane.showMessageDialog(null, "Invalid Input.");
+            } catch (ArgumentMismatchException exception) {
+                JOptionPane.showMessageDialog(null, exception.getMessage());
             }
         });
 

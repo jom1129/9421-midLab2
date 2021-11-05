@@ -41,15 +41,23 @@ public class Utility {
         return tokens;
 }
 
-public <T> List<String> textToHuffman(String userInput, List<Token<T>> tokenList) {
+public List<String> textToHuffman(String userInput, List<Token<String>> tokenList) throws
+        ArgumentMismatchException {
         StringBuilder input = new StringBuilder(userInput);
         List<String> output = new ArrayList<>();
-        char c;
+        String pointer;
+
+        List<String> tokenCharacterList = new ArrayList<>();
+
+        // List that contains the Characters stored in every Token
+        for (var tok : tokenList) tokenCharacterList.add(tok.getData());
 
         for (int i = 0; i < input.length(); i++) {
-             c = input.charAt(i);
-            for(Token<T> token : tokenList){
-                if (token.getData().equals(c)){
+             pointer = Character.toString(input.charAt(i));
+             if (!tokenCharacterList.contains(pointer)) // CHECK IF INPUTTED VALUES ARE PART OF THE CIPHER
+                 throw new ArgumentMismatchException("Values are not part of the Huffman Table Cipher!");
+            for(var token : tokenList){
+                if (token.getData().equals(pointer)){
                     output.add(token.getHuffmanCode());
                 }
             }
@@ -57,7 +65,6 @@ public <T> List<String> textToHuffman(String userInput, List<Token<T>> tokenList
         return output;
     }
 
-    // TODO: 10/30/2021 @Jerome, Kurt
    public <T> List<String> huffmanToText(String string, List<Token<T>> tokenList)
             throws ArgumentMismatchException {
 
@@ -375,13 +382,19 @@ public <T> List<String> textToHuffman(String userInput, List<Token<T>> tokenList
 
         result.append("Percent Savings is: " + percentage + "%\n\n");
         result.append("""
-                This computation does not take into count the size of the table.
+                This computation does not take into account the size of the table.
                 Actual savings values may be lesser because the huffman cipher table
                 will still need to be transmitted.
                 """);
         return result.toString();
     }
 
+    /**
+     * Takes a huffman code and returns its text equivalent
+     * @param list
+     * @param <T>
+     * @return
+     */
     public <T> String showHuffmanToTextOutput(List<String> list) {
         StringBuilder s = new StringBuilder();
         for (var tok : list) {
