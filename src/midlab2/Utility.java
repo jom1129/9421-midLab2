@@ -188,9 +188,9 @@ public class Utility {
     // Defunct method
     public <T> void setHuffmanCode(Tree<String> forest, List<Token<T>> forestList) {
         for(Token<T> node : forestList) {
-            setHuffmanCode(forest.getRoot(), "-1");
+            setHuffmanCode(forest.getRoot(), node.getElement);
             var temp = stackToString(treeStack);
-            node.setHuffmanCode(temp);
+            node.setHuffmanCode(huffmanStack);
             // Empty the stack
             treeStack.clear();
             // Clear hasVisited property
@@ -231,14 +231,14 @@ public class Utility {
 */
 
     /* recursive
-    public <T> void setHuffmanCode(TreeNode<String> node, String s) {
+    public <T> void setHuffmanCode(TreeNode<String> node, T element, String s) {
         if (s.equals("-1")) s = "";
         if (node.isLeaf() && Character.isLetter(node.getData().charAt(0))) {
             huffmanStack = s;
             return;
         }
-        setHuffmanCode(node.getLeft(), s + "0");
-        setHuffmanCode(node.getRight(), s + "1");
+        setHuffmanCode(node.getLeft(), element, s + "0");
+        setHuffmanCode(node.getRight(), element ,s + "1");
     }
     recursive
      */
