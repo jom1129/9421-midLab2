@@ -19,6 +19,7 @@ public class Interface {
     private final String AUTHORS;
     List<Token<String>> tokenList;
     Tree<String> forest;
+    List<String> huffman;
 
     // Panel that will contain the cards
     private JPanel mainCardPanel = new JPanel(new CardLayout());
@@ -47,7 +48,7 @@ public class Interface {
     // Buttons
     private JButton submit = new JButton("Submit");
     private JButton clear = new JButton("Clear");
-    private JButton submitHuffmanToText = new JButton("Submit");
+    private JButton submitHuffmanToText = new JButton("Submit Code");
 
     // JCombobox for Selecting Options for Encode / Decode
     String[] options = { "Encode Text", "Decode Huffman Code" };
@@ -95,7 +96,7 @@ public class Interface {
     // JComponent Arrays for nesting JPanels within JPanels
     private JComponent[] textToHuffmanPanelComponents = { authorsPanel, outputPanel };
     private JComponent[] huffmanToTextPanelComponents = { huffmanToTextTableValPanel, huffmanGetCodePanel,
-                        huffmanToTextOperationsPanel, huffmanOutputPanel};
+            huffmanToTextOperationsPanel, huffmanOutputPanel};
 
     // NEW JCOMPONENT ARRAYS
     private JComponent[] huffmanToTextTableValComponents = { new JLabel("Table Values: "), huffmanToTextTablePane };
@@ -185,8 +186,12 @@ public class Interface {
                     huffmanToTextTableArea.setDocument(outputField.getDocument());
                 } else {
                     // tokenList = utility.parseTokenList(charInputText.getText(), binInputText.getText());
-                    utility.huffmanToText(userInputText.getText(), tokenList);
-                    huffmanToTextOutputField.setDocument(outputField.getDocument());
+                    tokenList = utility.determineFrequency(userInputText.getText());
+                    forest = utility.forestBuilder(tokenList);
+                    utility.setHuffmanCode(forest, tokenList);
+                    utility.showHuffmanTable(tokenList);
+                    huffmanToTextTableArea.setDocument(outputField.getDocument());
+                   // huffmanToTextOutputField.setDocument(outputField.getDocument());
                 }
             } catch (ArgumentMismatchException arg) {
                 JOptionPane.showMessageDialog(null,
@@ -205,9 +210,9 @@ public class Interface {
         });
 
         submitHuffmanToText.addActionListener((ActionEvent e) -> {
-            outputField.setText("");
-            utility.huffmanToText(huffmanGetInputField.getText(),tokenList);
-            huffmanToTextOutputField.setText(outputField.getText());
+
+            huffman=utility.huffmanToText(huffmanGetInputField.getText(),tokenList);
+            huffmanToTextOutputField.setText(utility.showHuffmanToTextOutput(huffman));
         });
 
 
