@@ -196,15 +196,9 @@ public class Interface {
                     huffmanToTextTableArea.setDocument(outputField.getDocument());
                    // huffmanToTextOutputField.setDocument(outputField.getDocument());
                 }
-            } catch (ArgumentMismatchException arg) {
-                JOptionPane.showMessageDialog(null,
-                        arg.getMessage());
-            } catch (InvalidInputException inputException) {
-                JOptionPane.showMessageDialog(null,
-                        inputException.getMessage());
-            } catch (NumberFormatException | NullPointerException num) {
-                JOptionPane.showMessageDialog(null,
-                        num.getMessage());
+            } catch (ArgumentMismatchException | IllegalArgumentException |
+                    NullPointerException  | StringIndexOutOfBoundsException arg) {
+                        JOptionPane.showMessageDialog(null, "Invalid Input.");
             }
         });
 

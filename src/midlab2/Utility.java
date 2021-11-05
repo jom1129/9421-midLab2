@@ -4,29 +4,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Comparator to be used for the PriorityQueue Structure
+ */
 class MyComparator implements Comparator<TreeNode> {
     public int compare(TreeNode x, TreeNode y)
     {
-
         return x.getNodeWeight() - y.getNodeWeight();
-        // return y.getNodeWeight() - x.getNodeWeight();
     }
 }
 public class Utility {
     LinkedStack<Integer> treeStack = new LinkedStack<>();
-    // TODO: 10/30/2021 @Enrico 
-    /*
-        Concatenates the inputted text into a single
-        StringBuilder variable
-     */
-
-    /* TODO: 10/30/2021 @CJ
-       Determines the frequency of each character
-       and sets the appropriate value for
-       frequency in the Token class
-       Use downcasting when creating a List instance:
-       List<Token<T>> list = new ArrayList<>();
-     */
 
     public List<Token<String>> determineFrequency(String userText) {
         List<Character> characters = new ArrayList<>(); // characters that are
@@ -63,7 +51,6 @@ public class Utility {
         // List<String> charList = Arrays.asList(temp.split(","));
         List<String> output = new ArrayList<>();
         List<Token<T>> equalB = new ArrayList<>();
-
 
 
         while (input.length() != 0) {
@@ -121,11 +108,14 @@ public class Utility {
     }
 
 
-    /* TODO: 10/30/2021 @Jerome
-       Sets up the Forest of Trees
-       Similar to that of page 22
+    /**
+     * Uses a minheap as a priority Queue
+     * for constructing a forest
+     * @param tokens contains a tokenList with
+     * required parameters for the processing of a forest
+     * @param <T> data type of the nodes within the forest
+     * @return a structured forest using the minheap data structure
      */
-
      public <T> Tree<String> forestBuilder(List<Token<T>> tokens) {
 
         int n = tokens.size();
@@ -135,8 +125,8 @@ public class Utility {
 
          for (int i = 0; i < n; i++) {
 
-             // creating a Huffman node object
-             // and add it to the priority queue.
+             // Use the priority queue as a minheap structure
+             //
              TreeNode tn = new TreeNode(tokens.get(i).getData());
 
              tn.setNodeWeight(tokens.get(i).getFrequency());
@@ -186,10 +176,9 @@ public class Utility {
 
         return new Tree<>(root);
     }
-
-    // TODO: 10/30/2021 @Kurt
+    /* FOOTER2
     // To be used with forestBuilder
-    /* FOOTER
+    // Defunct method
     public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
         for(Token<T> node : forestList) {
             setHuffmanCode(forest.getRoot(), node.getData());
@@ -232,7 +221,7 @@ public class Utility {
         setHuffmanCode(node.getRight(), element, 1);
     }
     FOOTER2
-     */
+    */
 
     public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
         StringBuilder bits = new StringBuilder();
@@ -413,33 +402,6 @@ public class Utility {
             treeStack.pop();
             reverseStack(temp);
         }
-    }
-
-    public List<Token<String>> parseTokenList (String charText, String bitText) {
-        List<String> characterTemp;
-        List<String> binTemp;
-        List<Token<String>> tokens = new ArrayList<>();
-
-        // Split by comma, strip whitespaces
-        characterTemp = Arrays.asList(charText.split("\\s*,\\s*"));
-        binTemp = Arrays.asList(bitText.split("\\s*,\\s*"));
-
-        // Eliminate Duplicates
-        List<String> characters = characterTemp.stream()
-                .distinct()
-                .collect(Collectors.toList());
-        List<String> binList = binTemp;
-
-
-        if (characters.size() != binList.size()) {
-            throw new ArgumentMismatchException("Inputted parameters are not equal in length.");
-        }
-
-        for (int i = 0; i < characters.size(); i++) {
-            tokens.add(new Token<>(characters.get(i)));
-            tokens.get(i).setNumberOfBits(Integer.parseInt(binTemp.get(i)));
-        }
-        return tokens;
     }
 
     public <T> void showHuffmanTable(List<Token<String>> tokenList) {
