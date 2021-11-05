@@ -16,13 +16,12 @@ import java.util.List;
 public class Interface {
     private final int DEFAULT_COLUMNS = 80;
     private final int DEFAULT_ROWS = 10;
-    private final String AUTHORS;
     List<Token<String>> tokenList;
     Tree<String> forest;
     List<String> huffman;
 
     // Panel that will contain the cards
-    private JPanel mainCardPanel = new JPanel(new CardLayout());
+    private final JPanel mainCardPanel = new JPanel(new CardLayout());
 
     // Cards
     private JPanel textToHuffmanPanel = new JPanel();
@@ -34,7 +33,6 @@ public class Interface {
     private JPanel inputTypePanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
     private JPanel outputPanel = new JPanel();
-    private JPanel authorsPanel = new JPanel();
 
     private JPanel huffmanToTextTableValPanel = new JPanel();
     private JPanel huffmanGetCodePanel = new JPanel();
@@ -75,15 +73,9 @@ public class Interface {
     private JTextArea inputTextToHuffmanField = new JTextArea(DEFAULT_ROWS, DEFAULT_COLUMNS);
     private JScrollPane inputTextToHuffmanFieldPane = new JScrollPane(inputTextToHuffmanField);
 
-    private JTextArea outputHuffmanCodeArea = new JTextArea(DEFAULT_ROWS - 5, DEFAULT_COLUMNS);
+    private JTextArea outputHuffmanCodeArea = new JTextArea(DEFAULT_ROWS, DEFAULT_COLUMNS);
     private JScrollPane outputHuffmanCodePane = new JScrollPane(outputHuffmanCodeArea);
 
-
-
-
-    // Authors JTextArea
-    private JTextArea authorsField = new JTextArea(15, DEFAULT_COLUMNS);
-    private JScrollPane authorsScrollPane = new JScrollPane(authorsField);
 
     // JComponent Arrays for adding JComponents sequentially
 
@@ -114,7 +106,10 @@ public class Interface {
 
     // JComponent Arrays for clearing TextFields
     private JTextArea[] clearableTextFields = { userInputText, outputField, huffmanToTextTableArea, huffmanGetInputField,
-    huffmanToTextOutputField };
+    huffmanToTextOutputField, outputHuffmanCodeArea, huffmanToTextTableArea, huffmanToTextOutputField };
+
+    // JComponent Arrays for locking
+    private JTextArea[] lockFields = { outputHuffmanCodeArea, huffmanToTextTableArea, huffmanToTextOutputField };
 
     // Accessor Methods
     public JPanel getMainCardPanel() {
@@ -228,26 +223,6 @@ public class Interface {
             component.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         }
 
-        // Authors Panel
-        AUTHORS = """
-                
-                DATA STRUCTURES 9421
-                    TEAM THROWABLE()
-                            ANCHETA, CHARLES JR.
-                            BUSTARDE, JEROME
-                            CASTRO, ENRICO
-                            GARRIDO, LUPIN
-                            NUDO, KURT
-                
-                PROGRAM INFORMATION
-                    ENCODE TEXT: Converts Regular Text to a Huffman Expression
-                    DECODE: Decodes a Huffman Expression given a Cipher            
-                """;
-        authorsField.setText(AUTHORS);
-        authorsField.setEditable(false);
-        for (var component : authorsPanelComponents) authorsPanel.add(component);
-
-
         // Construct the text to huffman panel
         textToHuffmanPanel.setLayout(new BoxLayout(textToHuffmanPanel, BoxLayout.Y_AXIS));
         for (var component : textToHuffmanPanelComponents) textToHuffmanPanel.add(component);
@@ -259,6 +234,16 @@ public class Interface {
         outputPanel.add(new JLabel("Table Values: "));
         outputPanel.add(outputScrollPane);
         outputField.setEditable(false);
+
+        for (var component : lockFields) component.setEditable(false);
+
+        /*
+        outputHuffmanCodeArea.setEditable(false);
+        huffmanToTextTableArea.setEditable(false);
+        huffmanToTextOutputField.setEditable(false);
+
+         */
+
 
         mainCardPanel.add(textToHuffmanPanel, options[0]);
         mainCardPanel.add(huffmanToTextPanel, options[1]);
