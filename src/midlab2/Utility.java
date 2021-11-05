@@ -45,6 +45,22 @@ public class Utility {
         return tokens;
 }
 
+    public <T> List<String> textToHuffman(String userInput, List<Token<T>> tokenList) {
+        StringBuilder input = new StringBuilder(userInput);
+        List<String> output = new ArrayList<>();
+        char c;
+
+        for (int i = 0; i < input.length(); i++) {
+             c = input.charAt(i);
+            for(Token<T> token : tokenList){
+                if (token.getData().equals(c)){
+                    output.add(token.getHuffmanCode());
+                }
+            }
+        }
+        return output;
+    }
+
     // TODO: 10/30/2021 @Jerome, Kurt
    public <T> List<String> huffmanToText(String string, List<Token<T>> tokenList)
             throws ArgumentMismatchException {
