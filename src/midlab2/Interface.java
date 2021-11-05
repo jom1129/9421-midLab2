@@ -230,13 +230,9 @@ public class Interface {
             }
         });
 
-        //POTANGINA
-
         submitTextToHuffman.addActionListener((ActionEvent e) -> {
             StringBuilder temp = new StringBuilder();
             try {
-                // inputTextToHuffmanField.setText("pototoy");
-                // outputHuffmanCodeArea.setText("mo maliit");
                 huffman = utility.textToHuffman(inputTextToHuffmanField.getText(), tokenList);
 
                 for(var x : huffman) {
