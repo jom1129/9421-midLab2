@@ -183,66 +183,6 @@ public class Utility {
 
         return new Tree<>(root);
     }
-    /* footer
-    // To be used with forestBuilder
-    // Defunct method
-    public <T> void setHuffmanCode(Tree<String> forest, List<Token<T>> forestList) {
-        for(Token<T> node : forestList) {
-            setHuffmanCode(forest.getRoot(), node.getElement);
-            var temp = stackToString(treeStack);
-            node.setHuffmanCode(huffmanStack);
-            // Empty the stack
-            treeStack.clear();
-            // Clear hasVisited property
-            forest.clearHasVisited();
-        }
-
-    }
-
-    private <T> void setHuffmanCode(TreeNode<T> node, T element) {
-        setHuffmanCode(node, element, -1);
-    }
-
-    private <T> void setHuffmanCode(TreeNode<T> node, T element, int stackElement) {
-        if (stackElement != -1) treeStack.push(stackElement);
-
-        node.setHasVisited(true);
-
-        if (node.isLeaf()) {
-            if (!node.getData().equals(element))
-                treeStack.pop();
-            return;
-        }
-        //if(!treeStack.isEmpty() && node.getData() != element) treeStack.pop();
-
-        if (node.getData() != null && node.getData().equals(element)) {
-            return;
-        }
-
-
-        if (!node.isLeaf() && node.getLeft().hasVisited() && node.getRight().hasVisited() && !node.getLeft().getData().equals(element) && !node.getRight().getData().equals(element)) {
-            treeStack.pop();
-        }
-
-        setHuffmanCode(node.getLeft(), element, 0);
-        setHuffmanCode(node.getRight(), element, 1);
-    }
-    footerlol
-*/
-
-    /* recursive
-    public <T> void setHuffmanCode(TreeNode<String> node, T element, String s) {
-        if (s.equals("-1")) s = "";
-        if (node.isLeaf() && Character.isLetter(node.getData().charAt(0))) {
-            huffmanStack = s;
-            return;
-        }
-        setHuffmanCode(node.getLeft(), element, s + "0");
-        setHuffmanCode(node.getRight(), element ,s + "1");
-    }
-    recursive
-     */
-
     public <T> void setHuffmanCode(Tree<T> forest, List<Token<T>> forestList) {
         StringBuilder bits = new StringBuilder();
         int max = 0;
@@ -396,7 +336,7 @@ public class Utility {
             }
         }
     }
-
+*/
     private String stackToString(LinkedStack<Integer> stack) {
         StringBuilder toInt = new StringBuilder();
         while (!stack.isEmpty() && stack.getTop().getLink() != null && stack.getTop().getInfo() != -1)
