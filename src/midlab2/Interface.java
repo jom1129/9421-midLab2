@@ -47,6 +47,7 @@ public class Interface {
     private JButton clear = new JButton("Clear");
     private JButton submitHuffmanToText = new JButton("Submit Huffman Code");
     private JButton submitTextToHuffman = new JButton("Submit Text");
+    private JButton percentSavings = new JButton("Show Percent Savings");
 
     // JCombobox for Selecting Options for Encode / Decode
     String[] options = { "Encode Text", "Decode Huffman Code" };
@@ -81,7 +82,7 @@ public class Interface {
 
     private JComponent[] inputPanelComponents = { new JLabel("Input Cipher: "), userInputScrollPane };
     private JComponent[] inputTypePanelComponents = { new JLabel("Operation: "), operationType };
-    private JComponent[] buttonPanelComponents = { submit, clear };
+    private JComponent[] buttonPanelComponents = { submit, clear, percentSavings };
     private JComponent[] inputTextToHuffmanFieldPaneComponents = { new JLabel("Input Text: "),
             inputTextToHuffmanFieldPane };
     private JComponent[] inputTextToHuffmanFieldPanelButtonsComponents = { submitTextToHuffman };
@@ -160,7 +161,8 @@ public class Interface {
         for (var component : outputHuffmanCodePanelComponents) outputHuffmanCodePanel.add(component);
 
         // Buttons
-        for (var component : inputTextToHuffmanFieldPanelButtonsComponents) inputTextToHuffmanFieldPanelButtons.add(component);
+        for (var component : inputTextToHuffmanFieldPanelButtonsComponents)
+            inputTextToHuffmanFieldPanelButtons.add(component);
 
         // Secondary Text Input, after Cipher
         for (var component : inputTextToHuffmanFieldPaneComponents) inputTextToHuffmanFieldPanel.add(component);
@@ -194,11 +196,11 @@ public class Interface {
                     utility.setHuffmanCode(forest, tokenList);
                     utility.showHuffmanTable(tokenList);
                     huffmanToTextTableArea.setDocument(outputField.getDocument());
-                   // huffmanToTextOutputField.setDocument(outputField.getDocument());
+                    // huffmanToTextOutputField.setDocument(outputField.getDocument());
                 }
             } catch (ArgumentMismatchException | IllegalArgumentException |
-                    NullPointerException  | StringIndexOutOfBoundsException arg) {
-                        JOptionPane.showMessageDialog(null, "Invalid Input.");
+                    NullPointerException | StringIndexOutOfBoundsException arg) {
+                JOptionPane.showMessageDialog(null, "Invalid Input.");
             }
         });
 
@@ -206,12 +208,21 @@ public class Interface {
             for (var text : clearableTextFields) text.setText("");
         });
 
+        percentSavings.addActionListener((ActionEvent e) -> {
+            try {
+                JOptionPane.showMessageDialog(null, utility.computePercentageSavings(tokenList));
+            } catch (ArgumentMismatchException | IllegalArgumentException |
+                    NullPointerException | StringIndexOutOfBoundsException arg) {
+                JOptionPane.showMessageDialog(null, "Invalid Input.");
+            }
+        });
+
         submitHuffmanToText.addActionListener((ActionEvent e) -> {
             try {
-                huffman=utility.huffmanToText(huffmanGetInputField.getText(),tokenList);
+                huffman = utility.huffmanToText(huffmanGetInputField.getText(), tokenList);
                 huffmanToTextOutputField.setText(utility.showHuffmanToTextOutput(huffman));
             } catch (ArgumentMismatchException | IllegalArgumentException |
-                    NullPointerException  | StringIndexOutOfBoundsException arg) {
+                    NullPointerException | StringIndexOutOfBoundsException arg) {
                 JOptionPane.showMessageDialog(null, "Invalid Input.");
             }
         });
@@ -235,17 +246,8 @@ public class Interface {
 
         for (var component : lockFields) component.setEditable(false);
 
-        /*
-        outputHuffmanCodeArea.setEditable(false);
-        huffmanToTextTableArea.setEditable(false);
-        huffmanToTextOutputField.setEditable(false);
-
-         */
-
-
         mainCardPanel.add(textToHuffmanPanel, options[0]);
         mainCardPanel.add(huffmanToTextPanel, options[1]);
-
     }
 
     private static void createAndShowGUI() {

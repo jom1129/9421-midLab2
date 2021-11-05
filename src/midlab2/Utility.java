@@ -433,6 +433,30 @@ public class Utility {
                 tok.getFrequency(), tok.getHuffmanCode(), tok.getNumberOfBits());
     }
 
+    public <T> String computePercentageSavings(List<Token<T>>tokenList) {
+        int totalCharacters = 0;
+        int huffmanBits = 0;
+        int totalBits;
+        double percentage;
+        StringBuilder result = new StringBuilder();
+
+        // computes for the total characters
+        for (var token : tokenList) totalCharacters += token.getFrequency();
+
+        totalBits = totalCharacters * 7;
+
+        for (var token : tokenList) huffmanBits +=  token.getFrequency() * token.getNumberOfBits();
+        percentage = ((totalBits - 0.0 - huffmanBits) / (totalBits * 1.0)) * 100;
+
+        result.append("Percent Savings is: " + percentage + "%\n\n");
+        result.append("""
+                This computation does not take into count the size of the table.
+                Actual savings values may be lesser because the huffman cipher table
+                will still need to be transmitted.
+                """);
+        return result.toString();
+    }
+
     public <T> String showHuffmanToTextOutput(List<String> list) {
         StringBuilder s = new StringBuilder();
         for (var tok : list) {
