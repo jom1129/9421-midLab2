@@ -88,6 +88,7 @@ public class Interface {
     private JComponent[] inputTextToHuffmanFieldPanelButtonsComponents = { submitTextToHuffman };
 
     // JComponent Arrays for nesting JPanels within JPanels
+    // MASTER JPANELS
     private JComponent[] textToHuffmanPanelComponents = { outputPanel, inputTextToHuffmanFieldPanel,
             inputTextToHuffmanFieldPanelButtons, outputHuffmanCodePanel };
     private JComponent[] huffmanToTextPanelComponents = { huffmanToTextTableValPanel, huffmanGetCodePanel,
@@ -221,6 +222,26 @@ public class Interface {
             try {
                 huffman = utility.huffmanToText(huffmanGetInputField.getText(), tokenList);
                 huffmanToTextOutputField.setText(utility.showHuffmanToTextOutput(huffman));
+            } catch (ArgumentMismatchException | IllegalArgumentException |
+                    NullPointerException | StringIndexOutOfBoundsException arg) {
+                JOptionPane.showMessageDialog(null, "Invalid Input.");
+            }
+        });
+
+        //POTANGINA
+
+        submitTextToHuffman.addActionListener((ActionEvent e) -> {
+            StringBuilder temp = new StringBuilder();
+            try {
+                // inputTextToHuffmanField.setText("pototoy");
+                // outputHuffmanCodeArea.setText("mo maliit");
+                huffman = utility.textToHuffman(inputTextToHuffmanField.getText(), tokenList);
+
+                for(var x : huffman) {
+                    temp.append(x);
+                }
+
+                outputHuffmanCodeArea.setText(temp.toString());
             } catch (ArgumentMismatchException | IllegalArgumentException |
                     NullPointerException | StringIndexOutOfBoundsException arg) {
                 JOptionPane.showMessageDialog(null, "Invalid Input.");

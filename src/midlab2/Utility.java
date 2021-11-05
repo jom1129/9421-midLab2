@@ -1,8 +1,6 @@
 package midlab2;
 
 import java.util.*;
-import java.util.function.LongUnaryOperator;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -15,8 +13,6 @@ class MyComparator implements Comparator<TreeNode> {
     }
 }
 public class Utility {
-    LinkedStack<Integer> treeStack = new LinkedStack<>();
-    String huffmanStack;
 
     /**
      * Creates a tokenList while setting the Data and frequency parameter
@@ -45,7 +41,7 @@ public class Utility {
         return tokens;
 }
 
-    public <T> List<String> textToHuffman(String userInput, List<Token<T>> tokenList) {
+public <T> List<String> textToHuffman(String userInput, List<Token<T>> tokenList) {
         StringBuilder input = new StringBuilder(userInput);
         List<String> output = new ArrayList<>();
         char c;
@@ -350,33 +346,6 @@ public class Utility {
                     }
                 }
             }
-        }
-    }
-*/
-    private String stackToString(LinkedStack<Integer> stack) {
-        StringBuilder toInt = new StringBuilder();
-        while (!stack.isEmpty() && stack.getTop().getLink() != null && stack.getTop().getInfo() != -1)
-            if (stack.peek() != -1) toInt.append(stack.pop());
-        return toInt.toString();
-    }
-
-    private void reverseStack() {
-        if (!treeStack.isEmpty()) {
-            Integer temp = treeStack.peek();
-            treeStack.pop();
-            reverseStack();
-
-            reverseStack(temp);
-        }
-
-    }
-
-    private void reverseStack(Integer x) {
-        if (treeStack.isEmpty()) treeStack.push(x);
-        else {
-            Integer temp = treeStack.peek();
-            treeStack.pop();
-            reverseStack(temp);
         }
     }
 
