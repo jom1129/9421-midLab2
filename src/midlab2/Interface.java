@@ -40,8 +40,8 @@ public class Interface {
     private JPanel huffmanGetCodePanel = new JPanel();
     private JPanel huffmanToTextOperationsPanel = new JPanel();
     private JPanel huffmanOutputPanel = new JPanel();
-
-
+    private JPanel outputHuffmanCodePanel = new JPanel();
+    private JPanel inputTextToHuffmanFieldPanel = new JPanel();
 
     // Buttons
     private JButton submit = new JButton("Submit");
@@ -70,6 +70,14 @@ public class Interface {
     private JTextArea huffmanToTextOutputField = new JTextArea(DEFAULT_ROWS, DEFAULT_COLUMNS);
     private JScrollPane huffmanToTextOutputPane = new JScrollPane(huffmanToTextOutputField);
 
+    private JTextArea inputTextToHuffmanField = new JTextArea(DEFAULT_ROWS, DEFAULT_COLUMNS);
+    private JScrollPane inputTextToHuffmanFieldPane = new JScrollPane(inputTextToHuffmanField);
+
+    private JTextArea outputHuffmanCodeArea = new JTextArea(DEFAULT_ROWS - 5, DEFAULT_COLUMNS);
+    private JScrollPane outputHuffmanCodePane = new JScrollPane(outputHuffmanCodeArea);
+
+
+
 
     // Authors JTextArea
     private JTextArea authorsField = new JTextArea(15, DEFAULT_COLUMNS);
@@ -81,9 +89,11 @@ public class Interface {
     private JComponent[] inputTypePanelComponents = { new JLabel("Operation: "), operationType };
     private JComponent[] buttonPanelComponents = { submit, clear };
     private JComponent[] authorsPanelComponents = { new JLabel("Authors: "), authorsScrollPane };
+    private JComponent[] inputTextToHuffmanFieldPaneComponents = { new JLabel("Input Text: "),
+            inputTextToHuffmanFieldPane };
 
     // JComponent Arrays for nesting JPanels within JPanels
-    private JComponent[] textToHuffmanPanelComponents = { authorsPanel, outputPanel };
+    private JComponent[] textToHuffmanPanelComponents = { outputPanel, inputTextToHuffmanFieldPanel, outputHuffmanCodePanel };
     private JComponent[] huffmanToTextPanelComponents = { huffmanToTextTableValPanel, huffmanGetCodePanel,
             huffmanToTextOperationsPanel, huffmanOutputPanel};
 
@@ -92,7 +102,12 @@ public class Interface {
     private JComponent[] huffmanGetCodePanelComponents = { new JLabel("Huffman Code: "), huffmanGetInputFieldPane };
     private JComponent[] huffmanToTextOperationsPanelComponents = { submitHuffmanToText };
     private JComponent[] huffmanOutputPanelComponents = { new JLabel("Output: "), huffmanToTextOutputPane };
+    private JComponent[] outputHuffmanCodePanelComponents = { new JLabel("Huffman Code: "), outputHuffmanCodePane };
 
+    // Set every scrollpane as Scrollable
+    private JScrollPane[] scrollables = { inputTextToHuffmanFieldPane, outputHuffmanCodePane,
+    inputTextToHuffmanFieldPane, outputHuffmanCodePane, userInputScrollPane,
+    huffmanGetInputFieldPane, outputScrollPane, huffmanToTextTablePane };
 
     // JComponent Arrays for clearing TextFields
     private JTextArea[] clearableTextFields = { userInputText, outputField, huffmanToTextTableArea, huffmanGetInputField,
@@ -142,6 +157,12 @@ public class Interface {
             cardLayout.show(mainCardPanel, (String) e.getItem());
         });
         operationType.setSelectedIndex(0);
+
+        // Primary Huffman Code Output panel
+        for (var component : outputHuffmanCodePanelComponents) outputHuffmanCodePanel.add(component);
+
+        // Secondary Text Input, after Cipher
+        for (var component : inputTextToHuffmanFieldPaneComponents) inputTextToHuffmanFieldPanel.add(component);
 
         // Huffman Table Text
         for (var component : huffmanToTextTableValComponents) huffmanToTextTableValPanel.add(component);
@@ -196,6 +217,10 @@ public class Interface {
             huffmanToTextOutputField.setText(utility.showHuffmanToTextOutput(huffman));
         });
 
+        for (var component : scrollables) {
+            component.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            component.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        }
 
         // Authors Panel
         AUTHORS = """
