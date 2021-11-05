@@ -42,11 +42,13 @@ public class Interface {
     private JPanel huffmanOutputPanel = new JPanel();
     private JPanel outputHuffmanCodePanel = new JPanel();
     private JPanel inputTextToHuffmanFieldPanel = new JPanel();
+    private JPanel inputTextToHuffmanFieldPanelButtons = new JPanel();
 
     // Buttons
-    private JButton submit = new JButton("Submit");
+    private JButton submit = new JButton("Submit Cipher");
     private JButton clear = new JButton("Clear");
-    private JButton submitHuffmanToText = new JButton("Submit Code");
+    private JButton submitHuffmanToText = new JButton("Submit Huffman Code");
+    private JButton submitTextToHuffman = new JButton("Submit Text");
 
     // JCombobox for Selecting Options for Encode / Decode
     String[] options = { "Encode Text", "Decode Huffman Code" };
@@ -85,15 +87,16 @@ public class Interface {
 
     // JComponent Arrays for adding JComponents sequentially
 
-    private JComponent[] inputPanelComponents = { new JLabel("Input: "), userInputScrollPane };
+    private JComponent[] inputPanelComponents = { new JLabel("Input Cipher: "), userInputScrollPane };
     private JComponent[] inputTypePanelComponents = { new JLabel("Operation: "), operationType };
     private JComponent[] buttonPanelComponents = { submit, clear };
-    private JComponent[] authorsPanelComponents = { new JLabel("Authors: "), authorsScrollPane };
     private JComponent[] inputTextToHuffmanFieldPaneComponents = { new JLabel("Input Text: "),
             inputTextToHuffmanFieldPane };
+    private JComponent[] inputTextToHuffmanFieldPanelButtonsComponents = { submitTextToHuffman };
 
     // JComponent Arrays for nesting JPanels within JPanels
-    private JComponent[] textToHuffmanPanelComponents = { outputPanel, inputTextToHuffmanFieldPanel, outputHuffmanCodePanel };
+    private JComponent[] textToHuffmanPanelComponents = { outputPanel, inputTextToHuffmanFieldPanel,
+            inputTextToHuffmanFieldPanelButtons, outputHuffmanCodePanel };
     private JComponent[] huffmanToTextPanelComponents = { huffmanToTextTableValPanel, huffmanGetCodePanel,
             huffmanToTextOperationsPanel, huffmanOutputPanel};
 
@@ -160,6 +163,9 @@ public class Interface {
 
         // Primary Huffman Code Output panel
         for (var component : outputHuffmanCodePanelComponents) outputHuffmanCodePanel.add(component);
+
+        // Buttons
+        for (var component : inputTextToHuffmanFieldPanelButtonsComponents) inputTextToHuffmanFieldPanelButtons.add(component);
 
         // Secondary Text Input, after Cipher
         for (var component : inputTextToHuffmanFieldPaneComponents) inputTextToHuffmanFieldPanel.add(component);
@@ -250,7 +256,7 @@ public class Interface {
         for (var component : huffmanToTextPanelComponents) huffmanToTextPanel.add(component);
 
         // Output Panel
-        outputPanel.add(new JLabel("Output: "));
+        outputPanel.add(new JLabel("Table Values: "));
         outputPanel.add(outputScrollPane);
         outputField.setEditable(false);
 
